@@ -5,7 +5,7 @@ const path = require('path');
 const BuilderController = require('../controllers/BuilderController');
 const { isAuthenticated } = require('../controllers/middleware');
 const connection = require('../config/db'); // ADD THIS LINE
-const notificationController = require('../controllers/NotificationController');
+const notificationController = require('../controllers/notificationController');
 const tradeController = require('../controllers/tradeController');
 
 const storage = multer.diskStorage({
