@@ -3,7 +3,7 @@ const colors = require('colors');
 const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
-const connection = require('./config/db');
+
 const session = require('express-session');
 
 dotenv.config();
