@@ -1,0 +1,139 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(39)) { %> 
+
+    <div class="text-left m-2">
+        <a href="/add_property_type" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Property Type</a>
+    </div>
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                   
+
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Property Type</h5>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+                        </div>
+                        <table id="propertyTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                            
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">City Name</th>
+                                    <th scope="col">Image</th>
+                                    <!--  <th scope="col">Status</th> -->
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (property_types && property_types.length > 0) { %>
+                                    <% property_types.forEach(property_type => { %>
+                                        <tr>
+                                            <!-- <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input city-checkbox" type="checkbox" data-id="<%= property_type.id %>">
+                                                    <label class="form-check-label" for="propertyCheck<%= property_type.id %>"></label>
+                                                </div>
+                                            </td> -->
+                                            <td><%= i++ %></td>
+                                            <td><%= property_type.name %></td>
+                                            <td class="fw-bold"><img src="<%= baseUrl + 'Images/property_type/' + property_type.image %>"></td>
+                                            <!--  <td style="color: <%= property_type.status === 1 ? 'green' : 'red' %>;">
+                                                 <%= property_type.status === 1 ? 'Active' : 'Deactive' %>  -->
+                                            </td>
+                                            
+                                            <td>
+                                                <a href="/editpropertytype/<%= property_type.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                                                <button class="btn btn-sm btn-danger propertytype-city" data-id="<%= property_type.id %>"><i class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                    
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;" class="mt-4">No Property Type found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../../layout/footer') %>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize DataTable
+    const propertyTable = $('#propertyTable').DataTable({
+        responsive: true
+    });
+
+    // Hide DataTable search box and page length selector
+    propertyTable.on('init.dt', function () {
+        $('.dataTables_filter').addClass('d-none');
+        $('.dataTables_length').addClass('d-none');
+    });
+
+    // Event delegation for individual Delete buttons
+    $('#propertyTable').on('click', '.propertytype-city', async function () {
+        const propertytypeId = $(this).data('id');
+        try {
+            const response = await fetch(`/delete_property_type/${propertytypeId}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            if (response.ok) {
+                // Success message using SweetAlert2
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Property Type deleted successfully',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didClose: () => {
+                        // Reload the page after closing the Swal dialog
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500); // Adjust delay as needed
+                    }
+                });
+            } else {
+                // Error message using SweetAlert2
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to delete property type.'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Generic error message using SweetAlert2
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to delete property type.'
+            });
+        }
+    });
+
+
+
+ 
+});
+
+
+</script>

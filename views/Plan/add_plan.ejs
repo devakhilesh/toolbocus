@@ -1,0 +1,150 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+    <% if (permissions.includes(42)) { %> 
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add Plan</h5>
+            <form class="row g-3" id="addPlanForm">
+                <div class="col-md-12">
+                    <label for="inputPlanName" class="form-label">Plan Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputPlanName" name="plan_name" required>
+                    <div class="invalid-feedback">
+                        Plan name cannot be empty.
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="inputMonthlyPrice" class="form-label">Monthly Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputMonthlyPrice" name="monthly_price" required>
+                    <div class="invalid-feedback">
+                        Monthly price cannot be empty.
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="inputAnnualPrice" class="form-label">Annual Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputAnnualPrice" name="annual_price" required>
+                    <div class="invalid-feedback">
+                        Annual price cannot be empty.
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="inputTrialDays" class="form-label">Trial Days<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputTrialDays" name="trial_days" required>
+                    <div class="invalid-feedback">
+                        Trial days cannot be empty.
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="inputDescription" class="form-label">Description<span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="inputDescription" name="description" rows="4" required></textarea>
+                    <div class="invalid-feedback">
+                        Description cannot be empty.
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitPlanFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <% } else { %>
+    <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+ <% } %>
+</main>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitPlanFormButton').click(function () {
+            // Reset previous error messages
+            $('.invalid-feedback').hide();
+            $('#inputPlanName').removeClass('is-invalid');
+            $('#inputMonthlyPrice').removeClass('is-invalid');
+            $('#inputAnnualPrice').removeClass('is-invalid');
+            $('#inputTrialDays').removeClass('is-invalid');
+            $('#inputDescription').removeClass('is-invalid');
+
+            // Validate Plan Name
+            if ($('#inputPlanName').val().trim() === '') {
+                $('#inputPlanName').addClass('is-invalid');
+                $('#inputPlanName').next('.invalid-feedback').show();
+                return;
+            }
+
+            // Validate Monthly Price
+            if ($('#inputMonthlyPrice').val().trim() === '') {
+                $('#inputMonthlyPrice').addClass('is-invalid');
+                $('#inputMonthlyPrice').next('.invalid-feedback').show();
+                return;
+            }
+
+            // Validate Annual Price
+            if ($('#inputAnnualPrice').val().trim() === '') {
+                $('#inputAnnualPrice').addClass('is-invalid');
+                $('#inputAnnualPrice').next('.invalid-feedback').show();
+                return;
+            }
+
+            // Validate Trial Days
+            if ($('#inputTrialDays').val().trim() === '') {
+                $('#inputTrialDays').addClass('is-invalid');
+                $('#inputTrialDays').next('.invalid-feedback').show();
+                return;
+            }
+
+            // Validate Description
+            if ($('#inputDescription').val().trim() === '') {
+                $('#inputDescription').addClass('is-invalid');
+                $('#inputDescription').next('.invalid-feedback').show();
+                return;
+            }
+
+            // Form Data Submission
+            let formData = {
+                plan_name: $('#inputPlanName').val(),
+                monthly_price: $('#inputMonthlyPrice').val(),
+                annual_price: $('#inputAnnualPrice').val(),
+                trial_days: $('#inputTrialDays').val(),
+                description: $('#inputDescription').val(),
+            };
+
+            // AJAX request to submit form data
+            $.ajax({
+                url: '/save_plan',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        // On success, show success message and redirect
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(function() {
+                            // Redirect to view_plans page
+                            window.location.href = '/view_plan';
+                        });
+                    } else {
+                        // On failure, show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // On AJAX error, show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + xhr.responseText
+                    });
+                }
+            });
+        });
+    });
+</script>

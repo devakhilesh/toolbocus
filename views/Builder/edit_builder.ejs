@@ -1,0 +1,312 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+     <% if (permissions.includes(36)) { %> 
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Builder</h5>
+            <form class="row g-3" id="editBuilderForm" enctype="multipart/form-data">
+
+                <input type="hidden" id="builderId" value="<%= builder.id %>">
+
+                <div class="col-md-6">
+                    <label for="inputName" class="form-label">Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputName" name="Name" value="<%= builder.name %>" required>
+                    <div class="invalid-feedback">
+                        Name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputContactName" class="form-label">Builder Contact Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputContactName" name="contactname" value="<%= builder.contactname %>" placeholder="Enter Builder Contact Name" required>
+                    <div class="invalid-feedback">
+                        Builder Contact Name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputEmail" class="form-label">Email<span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="inputEmail" name="email" value="<%= builder.email %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputPhone" class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputPhone" name="phone" value="<%= builder.mobile_no %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid phone number.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputCompanyName" class="form-label">Company Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputCompanyName" name="companyName" value="<%= builder.companyname %>" required>
+                    <div class="invalid-feedback">
+                        Company name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputAddress" class="form-label">Address<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputAddress" name="address" value="<%= builder.address %>" required>
+                    <div class="invalid-feedback">
+                        Address cannot be empty.
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputCompanyCIN" class="form-label">Company CIN<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputCompanyCIN" name="companyCIN" value="<%= builder.companyCIN %>" placeholder="Enter Company CIN" pattern="[A-Z0-9]{21}" maxlength="21" required>
+                    <div class="invalid-feedback">Company CIN must be exactly 21 characters long and contain only capital letters.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputRERA" class="form-label">RERA Registration Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputRERA" name="reraregnumber" value="<%= builder.reraregnumber %>" placeholder="Enter RERA Registration Number">
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputCity" class="form-label">City<span class="text-danger">*</span></label>
+                    <select id="inputCity" class="form-select" name="city" required>
+                        <option value="" selected disabled>Select City</option>
+                        <% tbl_cities.forEach(city => { %>
+                            <option value="<%= city.name %>" <%= builder.city === city.name ? 'selected' : '' %>><%= city.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">
+                        City cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputState" class="form-label">State<span class="text-danger">*</span></label>
+                    <select id="inputState" class="form-select" name="state" required>
+                        <option value="" selected disabled>Select State</option>
+                        <% tbl_states.forEach(state => { %>
+                            <option value="<%= state.name %>" <%= builder.state === state.name ? 'selected' : '' %>><%= state.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">
+                        State cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputPostalCode" class="form-label">Postal Code<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputPostalCode" name="postalcode" value="<%= builder.postalcode %>" placeholder="Enter Postal Code" maxlength="6" pattern="\d{6}" title="Please enter exactly 6 digits" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid postal code.
+                    </div>
+                </div>
+            
+                <div class="col-md-6">
+                    <label for="inputWebsite" class="form-label">Website URL</label>
+                    <input type="text" class="form-control" id="inputWebsite" name="website" value="<%= builder.website %>" placeholder="Enter Website URL" pattern="https?://.+(\.[a-z]{2,})" title="Please enter a valid URL (e.g., https://example.com)">
+                    <div class="invalid-feedback">
+                        Please enter a valid URL.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputPassword" class="form-label">Password<span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="inputPassword" name="password" value="<%= builder.password %>" required>
+                    <div class="invalid-feedback">
+                        Password cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputStatus" class="form-label">Status<span class="text-danger">*</span></label>
+                    <select id="inputStatus" class="form-select" name="status" required>
+                        <option value="" selected disabled>Select Status</option>
+                        <option value="1" <%= builder.status == '1' ? 'selected' : '' %>>Active</option>
+                        <option value="0" <%= builder.status == '0' ? 'selected' : '' %>>Inactive</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Status cannot be empty.
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <label for="inputCompanyDetails" class="form-label">Company Description<span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="inputCompanyDetails" name="companydetails" placeholder="Enter Company Description" rows="2" required><%= builder.companydetails %></textarea>
+                    <div class="invalid-feedback">
+                        Company description cannot be empty.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitBuilderFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitBuilderFormButton').click(function () {
+            // Reset any previous error messages
+            $('.invalid-feedback').hide();
+            $('input, select').removeClass('is-invalid');
+
+            // Validate form fields
+            let valid = true;
+            if ($('#inputName').val().trim() === '') {
+                $('#inputName').addClass('is-invalid');
+                $('#inputName').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputContactName').val().trim() === '') {
+                $('#inputContactName').addClass('is-invalid');
+                $('#inputContactName').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputEmail').val().trim() === '' || !isValidEmail($('#inputEmail').val().trim())) {
+                $('#inputEmail').addClass('is-invalid');
+                $('#inputEmail').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputPhone').val().trim() === '') {
+                $('#inputPhone').addClass('is-invalid');
+                $('#inputPhone').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputCompanyName').val().trim() === '') {
+                $('#inputCompanyName').addClass('is-invalid');
+                $('#inputCompanyName').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputAddress').val().trim() === '') {
+                $('#inputAddress').addClass('is-invalid');
+                $('#inputAddress').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputCompanyCIN').val().trim() === '' || !$('#inputCompanyCIN')[0].checkValidity()) {
+                $('#inputCompanyCIN').addClass('is-invalid');
+                $('#inputCompanyCIN').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputCity').val().trim() === '') {
+                $('#inputCity').addClass('is-invalid');
+                $('#inputCity').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputState').val().trim() === '') {
+                $('#inputState').addClass('is-invalid');
+                $('#inputState').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputPostalCode').val().trim() === '' || !$('#inputPostalCode')[0].checkValidity()) {
+                $('#inputPostalCode').addClass('is-invalid');
+                $('#inputPostalCode').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputPassword').val().trim() === '') {
+                $('#inputPassword').addClass('is-invalid');
+                $('#inputPassword').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputStatus').val().trim() === '') {
+                $('#inputStatus').addClass('is-invalid');
+                $('#inputStatus').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputCompanyDetails').val().trim() === '') {
+                $('#inputCompanyDetails').addClass('is-invalid');
+                $('#inputCompanyDetails').next('.invalid-feedback').show();
+                valid = false;
+            }
+
+            if (valid) {
+                // Prepare form data
+                let formData = {
+                    id: $('#builderId').val(),
+                    name: $('#inputName').val(),
+                    contactname: $('#inputContactName').val(),
+                    email: $('#inputEmail').val(),
+                    phone: $('#inputPhone').val(),
+                    company_name: $('#inputCompanyName').val(),
+                    address: $('#inputAddress').val(),
+                    companyCIN: $('#inputCompanyCIN').val(),
+                    reraregnumber: $('#inputRERA').val(),
+                    city: $('#inputCity').val(),
+                    state: $('#inputState').val(),
+                    postalcode: $('#inputPostalCode').val(),
+                    website: $('#inputWebsite').val(),
+                    password: $('#inputPassword').val(),
+                    status: $('#inputStatus').val(),
+                    companydetails: $('#inputCompanyDetails').val()
+                };
+
+                // Log values to verify
+                console.log("Updated Builder Data:", formData);
+
+                // AJAX request to submit form data
+                $.ajax({
+                    url: '/update_builder/' + $('#builderId').val(),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/view_builder';
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', xhr.responseText);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: xhr.responseText,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+
+        // Email validation function
+        function isValidEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        // Postal code validation function
+        function validatePostalCode(input) {
+            const pattern = /^\d{6}$/;
+            if (!pattern.test(input.value)) {
+                input.setCustomValidity("Please enter exactly 6 digits");
+            } else {
+                input.setCustomValidity("");
+            }
+        }
+
+        // URL validation function
+        function validateURL(input) {
+            const urlPattern = /^https?:\/\/.+(\.[a-z]{2,})/;
+            if (!urlPattern.test(input.value)) {
+                input.setCustomValidity("Please enter a valid URL (e.g., https://example.com)");
+            } else {
+                input.setCustomValidity("");
+            }
+        }
+    });
+</script>

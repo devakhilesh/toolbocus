@@ -1,0 +1,85 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+
+       <% if (permissions.includes(21)) { %> 
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Transactions</h5>
+                        <table id="tableId" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">Transaction ID</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (transactions && transactions.length > 0) { %>
+                                    <% transactions.forEach(transaction => { %>
+                                        <tr>
+                                            <td><%= i++ %></td>
+                                            <td><%= transaction.transaction_id %></td>
+                                            <td><%= transaction.name %></td>
+                                            <td><%= transaction.amount %></td>
+                                            <td><%= transaction.reason %></td>
+                                            <td style="color: <%= transaction.type == '1' ? 'green' : 'red' %>;">
+                                                <%= transaction.type == '1' ? 'Credit' : 'Debit' %>
+                                            </td>
+                                            <td><%= formatDateTime(transaction.created_at) %></td>
+                                          
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">No Transactions found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <% } else { %>
+    <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+    
+ <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+                                <% 
+function formatDateTime(dateString) {
+    const options = { 
+        year: '2-digit', 
+        month: '2-digit', 
+        day: '2-digit',
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false // Use 24-hour format
+    };
+    return new Date(dateString).toLocaleString(undefined, options);
+}
+
+function formatDate(dateString) {
+const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+%>
+<script>
+       initializeDataTable('#tableId');
+
+</script>

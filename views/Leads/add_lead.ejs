@@ -1,0 +1,220 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(29)) { %> <!-- Replace with relevant permission ID -->
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add Lead</h5>
+            <form class="row g-3" id="addLeadForm" enctype="multipart/form-data">
+
+                <div class="col-md-6">
+                    <label for="inputLeadName" class="form-label">Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputLeadName" name="name">
+                    <div class="invalid-feedback">
+                        Name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputLeadEmail" class="form-label">Email<span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="inputLeadEmail" name="email">
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputLeadPhone" class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputLeadPhone" name="phone">
+                    <div class="invalid-feedback">
+                        Please enter a valid phone number.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputLeadSource" class="form-label">Source<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputLeadSource" name="source">
+                    <div class="invalid-feedback">
+                        Source cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputLeadStatus" class="form-label"> Lead Status<span class="text-danger">*</span></label>
+                    <select id="inputLeadStatus" class="form-select" name="status" required>
+                        <option value="">Select Status</option>
+                        <option value="new">New</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="converted">Converted</option>
+                        <option value="lost">Lost</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Status cannot be empty.
+                    </div>
+                </div>
+                
+                
+                   <% if (role != 'Builder') { %> 
+                    <div class="col-md-6">
+                        <label for="inputBuilderID" class="form-label">Builder Name<span class="text-danger">*</span></label>
+                        <select id="inputBuilderID" class="form-select" name="builder_id">
+                            <option value="">Select</option>
+                            <% builders.forEach(builder => { %>
+                                <option value="<%= builder.id %>" style="color: black;"><%= builder.name %></option>
+                            <% }); %>
+                        </select>
+                        <div class="invalid-feedback">
+                            Builder name cannot be empty.
+                        </div>
+                    </div>
+                <% } else { %>
+                    <!-- Hidden input field to pass session ID as builder_id -->
+                    <input type="hidden" name="builder_id" value="<%= session.user.id %>">
+                <% } %>
+
+                <div class="col-md-6">
+                <label for="inputLeadPassword" class="form-label">Password<span class="text-danger">*</span></label>
+                <input type="password" class="form-control" id="inputLeadPassword" name="password">
+                <div class="invalid-feedback">
+                    Password cannot be empty.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="inputLeadConfirmPassword" class="form-label">Confirm Password<span class="text-danger">*</span></label>
+                <input type="password" class="form-control" id="inputLeadConfirmPassword" name="confirm_password">
+                <div class="invalid-feedback">
+                    Passwords do not match.
+                </div>
+            </div>
+
+                
+               
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitLeadFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% } else { %>
+        <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+    <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+<script>
+   $(document).ready(function () {
+    $('#submitLeadFormButton').click(function () {
+        // Reset any previous error messages
+        $('.invalid-feedback').hide();
+        $('input, select').removeClass('is-invalid');
+
+        // Validate form fields
+        let valid = true;
+        if ($('#inputLeadName').val().trim() === '') {
+            $('#inputLeadName').addClass('is-invalid');
+            $('#inputLeadName').next('.invalid-feedback').show();
+            valid = false;
+        }
+        if ($('#inputLeadEmail').val().trim() === '' || !isValidEmail($('#inputLeadEmail').val().trim())) {
+            $('#inputLeadEmail').addClass('is-invalid');
+            $('#inputLeadEmail').next('.invalid-feedback').show();
+            valid = false;
+        }
+        if ($('#inputLeadPhone').val().trim() === '') {
+            $('#inputLeadPhone').addClass('is-invalid');
+            $('#inputLeadPhone').next('.invalid-feedback').text('Phone number cannot be empty.').show();
+            valid = false;
+        } else if (!/^\d+$/.test($('#inputLeadPhone').val().trim())) {
+            $('#inputLeadPhone').addClass('is-invalid');
+            $('#inputLeadPhone').next('.invalid-feedback').text('Phone number must contain only digits.').show();
+            valid = false;
+        }
+        if ($('#inputLeadSource').val().trim() === '') {
+            $('#inputLeadSource').addClass('is-invalid');
+            $('#inputLeadSource').next('.invalid-feedback').show();
+            valid = false;
+        }
+        if ($('#inputLeadStatus').val().trim() === '') {
+            $('#inputLeadStatus').addClass('is-invalid');
+            $('#inputLeadStatus').next('.invalid-feedback').show();
+            valid = false;
+        }
+
+        // Validate Password
+        if ($('#inputLeadPassword').val().trim() === '') {
+            $('#inputLeadPassword').addClass('is-invalid');
+            $('#inputLeadPassword').next('.invalid-feedback').text('Password cannot be empty.').show();
+            valid = false;
+        }
+
+        // Validate Confirm Password
+        if ($('#inputLeadConfirmPassword').val().trim() === '') {
+            $('#inputLeadConfirmPassword').addClass('is-invalid');
+            $('#inputLeadConfirmPassword').next('.invalid-feedback').text('Confirm Password cannot be empty.').show();
+            valid = false;
+        } else if ($('#inputLeadPassword').val().trim() !== $('#inputLeadConfirmPassword').val().trim()) {
+            $('#inputLeadConfirmPassword').addClass('is-invalid');
+            $('#inputLeadConfirmPassword').next('.invalid-feedback').text('Passwords do not match.').show();
+            valid = false;
+        }
+
+        if (valid) {
+            // Prepare form data
+            let formData = {
+                name: $('#inputLeadName').val(),
+                email: $('#inputLeadEmail').val(),
+                mobile_no: $('#inputLeadPhone').val(),
+                source: $('#inputLeadSource').val(),
+                lead_status: $('#inputLeadStatus').val(),
+                builder_id: $('#inputBuilderID').val(),
+                password: $('#inputLeadPassword').val(), 
+                confirm_password: $('#inputLeadConfirmPassword').val(),  
+
+            };
+
+            // Log values to verify
+            console.log("New Lead Data:", formData);
+
+            // AJAX request to submit form data
+            $.ajax({
+                url: '/saveLeadDetails',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/view_lead';
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', xhr.responseText);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: xhr.responseText,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+    });
+
+    // Email validation function
+    function isValidEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    }
+});
+
+</script>

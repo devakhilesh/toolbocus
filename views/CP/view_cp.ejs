@@ -1,0 +1,138 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(31)) { %> 
+
+    <div class="text-left m-4">
+        <a href="/add_cp" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add CP</a>
+    </div>
+    <% } %>
+    
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                    <div class="card-body pb-0">
+                       <% if (permissions.includes(32)) { %> 
+
+                        <h5 class="card-title">All CP</h5>
+                        <div class="mb-3">
+                        </div>
+                        <table id="tableId" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Status</th>
+                                    <% if (permissions.includes(33) || permissions.includes(34)) { %> 
+                                    <th scope="col">Actions</th>
+                                    <% } %>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (cps && cps.length > 0) { %>
+                                    <% cps.forEach(cp => { %>
+                                        <tr>
+                                            <td><%= i++ %></td>
+                                            <td><%= cp.name %></td>
+                                            <td><%= cp.email %></td>
+                                            <td><%= cp.mobile_no %></td>
+                                            <td><%= cp.address %></td>
+                                <td style="color: <%= cp.status == '1' ? 'green' : 'red' %>;">
+                                 <%= cp.status == '1' ? 'Active' : 'Inactive' %>
+                                </td>
+
+                                <% if (permissions.includes(33) || permissions.includes(34)) { %> 
+                                            <td>
+                                            <% if (permissions.includes(33)) { %> 
+                                                <a href="/edit_cp/<%= cp.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                                                <% } %>
+                                                <% if (permissions.includes(34)) { %> 
+
+                                                <button class="btn btn-sm btn-danger deletecp" data-id="<%= cp.id %>"><i class="bi bi-trash"></i></button>
+                                            <% } %>
+                                            </td>
+                                            <% } %>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="8" style="text-align: center;">No cps found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../layout/footer') %>
+<script>
+$(document).ready(function() {
+    // Initialize the DataTable
+    const builderTable = initializeDataTable('#tableId');
+
+    // Handle delete action
+    $('#tableId').on('click', '.deletecp', async function () {
+        const cpId = $(this).data('id');
+
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`/delete_cp/${cpId}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'CP deleted successfully',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didClose: () => {
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
+                        }
+                    });
+                } else {
+                    await Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to delete cp.'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to delete cp.'
+                });
+            }
+        }
+    });
+});
+</script>

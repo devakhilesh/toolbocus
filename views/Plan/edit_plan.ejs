@@ -1,0 +1,148 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+<% if (permissions.includes(43)) { %> 
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Plan</h5>
+            <form class="row g-3" id="editPlanForm" enctype="multipart/form-data">
+
+                <input type="hidden" id="planId" value="<%= plan.id %>">
+
+                <div class="col-md-6">
+                    <label for="inputName" class="form-label">Plan Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputName" name="name" value="<%= plan.name %>" required>
+                    <div class="invalid-feedback">
+                        Plan name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputMonthlyPrice" class="form-label">Monthly Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputMonthlyPrice" name="monthly_price" value="<%= plan.monthly_price %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid monthly price.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputAnnualPrice" class="form-label">Annual Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputAnnualPrice" name="annual_price" value="<%= plan.annual_price %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid annual price.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputTrialDays" class="form-label">Trial Days</label>
+                    <input type="number" class="form-control" id="inputTrialDays" name="trial_days" value="<%= plan.trial_days %>">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="inputDescription" name="description"><%= plan.description %></textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputStatus" class="form-label">Status<span class="text-danger">*</span></label>
+                    <select id="inputStatus" class="form-select" name="status" required>
+                        <option value="">Select Status</option>
+                        <option value="1" <%= plan.status == '1' ? 'selected' : '' %>>Active</option>
+                        <option value="0" <%= plan.status == '0' ? 'selected' : '' %>>Inactive</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Status cannot be empty.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitPlanFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <% } else { %>
+    <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+ <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitPlanFormButton').click(function () {
+            // Reset any previous error messages
+            $('.invalid-feedback').hide();
+            $('input, textarea, select').removeClass('is-invalid');
+
+            // Validate form fields
+            let valid = true;
+            if ($('#inputName').val().trim() === '') {
+                $('#inputName').addClass('is-invalid');
+                $('#inputName').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputMonthlyPrice').val().trim() === '' || isNaN($('#inputMonthlyPrice').val().trim())) {
+                $('#inputMonthlyPrice').addClass('is-invalid');
+                $('#inputMonthlyPrice').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputAnnualPrice').val().trim() === '' || isNaN($('#inputAnnualPrice').val().trim())) {
+                $('#inputAnnualPrice').addClass('is-invalid');
+                $('#inputAnnualPrice').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputStatus').val().trim() === '') {
+                $('#inputStatus').addClass('is-invalid');
+                $('#inputStatus').next('.invalid-feedback').show();
+                valid = false;
+            }
+
+            if (valid) {
+                // Prepare form data
+                let formData = {
+                    id: $('#planId').val(),
+                    name: $('#inputName').val(),
+                    monthly_price: $('#inputMonthlyPrice').val(),
+                    annual_price: $('#inputAnnualPrice').val(),
+                    trial_days: $('#inputTrialDays').val(),
+                    description: $('#inputDescription').val(),
+                    status: $('#inputStatus').val()
+                };
+
+                // Log values to verify
+                console.log("Updated Plan Data:", formData);
+
+                // AJAX request to submit form data
+                $.ajax({
+                    url: '/updateplan/' + formData.id,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/view_plan'; // Redirect to the plans view
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', xhr.responseText);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: xhr.responseText,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,103 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add Property Type</h5>
+            <form class="row g-3" id="multiStepForm" enctype="multipart/form-data">
+
+                <div class="col-md-12">
+                    <label for="inputpropertytype" class="form-label">Property Type<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputpropertytype" name="name" required>
+                    <div class="invalid-feedback">
+                        Please enter a property type.
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin: 30px 0;">
+                    <label class="form-label" for="inputpropertyImage">Upload Image<span class="text-danger">*</span></label>
+                    <input type="file" class="form-control" id="inputpropertyImage" name="image" required />
+                    <div class="invalid-feedback">
+                        Please select an image file.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+
+<script>
+    $(document).ready(function () {
+        $('#submitFormButton').click(function () {
+            // Reset any previous error messages
+            $('#inputpropertytype').removeClass('is-invalid');
+            $('#inputpropertyImage').removeClass('is-invalid');
+            $('.invalid-feedback').hide();
+
+            // Validate Property Type
+            if ($('#inputpropertytype').val().trim() === '') {
+                $('#inputpropertytype').addClass('is-invalid');
+                $('#inputpropertytype').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Validate Image Upload
+            let imageUpload = $('#inputpropertyImage')[0].files[0];
+            if (!imageUpload) {
+                $('#inputpropertyImage').addClass('is-invalid');
+                $('#inputpropertyImage').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Form Data Submission
+            let formData = new FormData();
+            formData.append('name', $('#inputpropertytype').val()); // Corrected to inputpropertytype
+            formData.append('image', imageUpload);
+
+            // AJAX request to submit form data
+            $.ajax({
+                url: '/save_property_type',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        // On success, show success message and redirect
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(function() {
+                            // Redirect to view_property_type page
+                            window.location.href = '/view_property_type';
+                        });
+                    } else {
+                        // On failure, show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // On AJAX error, show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + xhr.responseText
+                    });
+                }
+            });
+        });
+    });
+</script>

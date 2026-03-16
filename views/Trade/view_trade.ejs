@@ -1,0 +1,102 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+
+<div class="pagetitle">
+    <h3>Trade Responses</h3>
+</div>
+
+<section class="section">
+<div class="card">
+<div class="card-body">
+
+<table class="table table-hover text-center">
+
+<thead class="table-dark">
+<tr>
+<th>ID</th>
+<th>Item Name</th>
+<th>Poster Name</th>
+<th>Responder Name</th>
+<th>Status</th>
+<th>Date</th>
+
+</tr>
+</thead>
+
+<tbody>
+
+<% if(trades && trades.length > 0){ %>
+
+<% let i = (currentPage - 1) * 10 + 1; %>
+<% trades.forEach(function(trade){ %>
+
+<tr>
+
+<td><%= i++ %></td>
+<td><%= trade.item_name %></td>
+<td><%= trade.poster_name %></td>
+<td><%= trade.responder_name %></td>
+<td>
+<span class="badge 
+<%= trade.status === 'pending' ? 'bg-warning' :
+trade.status === 'accepted' ? 'bg-success' :
+trade.status === 'rejected' ? 'bg-danger' :
+trade.status === 'completed' ? 'bg-primary' :
+'bg-secondary' %>">
+<%= trade.status %>
+</span>
+</td>
+
+<td><%= new Date(trade.created_at).toLocaleDateString() %></td>
+
+</tr>
+
+<% }) %>
+
+<% } else { %>
+
+<tr>
+<td colspan="7">No Trade Responses Found</td>
+</tr>
+
+<% } %>
+
+</tbody>
+
+</table>
+<nav>
+<ul class="pagination justify-content-end">
+
+<% if(currentPage > 1){ %>
+<li class="page-item">
+<a class="page-link" href="/admin/view_trade?page=<%= currentPage-1 %>">Previous</a>
+</li>
+<% } %>
+
+<% for(let i=1;i<=totalPages;i++){ %>
+
+<li class="page-item <%= currentPage === i ? 'active' : '' %>">
+<a class="page-link" href="/admin/view_trade?page=<%= i %>">
+<%= i %>
+</a>
+</li>
+
+<% } %>
+
+<% if(currentPage < totalPages){ %>
+<li class="page-item">
+<a class="page-link" href="/admin/view_trade?page=<%= currentPage+1 %>">Next</a>
+</li>
+<% } %>
+
+</ul>
+</nav>
+</div>
+</div>
+</section>
+
+</main>
+
+<%- include('../layout/footer') %>

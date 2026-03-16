@@ -1,0 +1,122 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-2">Property Details</h5>
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <h6>Site Name: <span class="text-primary"><%= property.site_name %></span></h6>
+                    <p><strong>Location:</strong> <%= property.location %></p>
+                    <p><strong>Address:</strong> <%= property.address %>, <%= property.city %>, <%= property.state %> <%= property.postal_code %></p>
+                    <p><strong>Total Views:</strong> <%= property.total_views %></p>
+                             <p><strong>Status:</strong> <span class="badge <%= property.status === '0' ? 'bg-danger' : 'bg-success' %>">
+                        <%= property.status === '0' ? 'Inactive' : 'Active' %>
+                    </span></p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>RERA Number:</strong><%= property.rera_number %></p>
+                    <p><strong>Starting Price:</strong><%= property.starting_price.toLocaleString() %></p>
+                    <p><strong>Area:</strong> <%= property.area %> sqft</p>
+                    <p><strong>No of BHK Units:</strong> <%= property.no_of_bhk_units %></p>
+
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Detail Side Information :</strong>₹ <%= property.detail_side_info %></p>
+                    <p><strong>Price:</strong>₹ <%= property.price.toLocaleString() %></p>
+                    <p><strong>Number of Inventory:</strong> <%= property.inventory_number %></p>
+                    <p><strong>Amenities:</strong> <%= property.amenities %></p>
+
+                </div>
+            </div>
+
+            <hr>
+            
+                        <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>Built-up Area (Sq.ft):</strong><%= property.built_up_area %></p>
+                    <p><strong>Number of BHK Units:</strong><%= property.no_of_bhk_units %></p>
+                    <p><strong>Type of Society:</strong> <%= property.type_of_society %></p>
+                    <p><strong>Possession Date:</strong> <%= property.possession_date %></p>
+                    <p><strong>No. Of Flats Sold:</strong> <%= property.no_of_flats_sold %></p>
+
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Carpet Area (Sq.ft):</strong><%= property.carpet_area %></p>
+                    <p><strong>Bank Loan Availability:</strong> <%= property.bank_loan_availability ? 'Yes' : 'No' %></p>
+                    <p><strong>Number of Rooms:</strong> <%= property.number_of_rooms %></p>
+                    <p><strong>Possession Status:</strong> <%= property.possession_status %></p>
+                    <p><strong>Nearby Facilities:</strong> <%= property.nearby_facilities %></p>
+
+                </div>
+            </div>
+
+            <hr>
+
+    <div class="row">
+    <h5 class="card-title text-center mb-4">Property Images</h5>
+
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-2 mb-3 text-center">
+                <h6>Site Image</h6>
+                <img src="<%= baseUrl %>Images/property/<%= property.upload_site_images %>" alt="Site Image" class="img-fluid" data-toggle="modal" data-target="#imageModal" onclick="openModal(this.src)">
+            </div>
+            <div class="col-md-2 mb-3 text-center">
+                <h6>Flat Image</h6>
+                <img src="<%= baseUrl %>Images/property/<%= property.upload_flat_images %>" alt="Flat Image" class="img-fluid" data-toggle="modal" data-target="#imageModal" onclick="openModal(this.src)">
+            </div>
+            <div class="col-md-2 mb-3 text-center">
+                <h6>Company Register </h6>
+                <img src="<%= baseUrl %>Images/property/<%= property.upload_company_register_certificate %>" alt="Company Register Image" class="img-fluid" data-toggle="modal" data-target="#imageModal" onclick="openModal(this.src)">
+            </div>
+            <div class="col-md-2 mb-3 text-center">
+                <h6>Site Layout Plan</h6>
+                <img src="<%= baseUrl %>Images/property/<%= property.upload_site_layout_plans %>" alt="Site Layout Plan Image" class="img-fluid" data-toggle="modal" data-target="#imageModal" onclick="openModal(this.src)">
+            </div>
+            <div class="col-md-2 mb-3 text-center">
+                <h6>Other Documents</h6>
+                <img src="<%= baseUrl %>Images/property/<%= property.upload_other_document %>" alt="Upload Other Documents Image" class="img-fluid" data-toggle="modal" data-target="#imageModal" onclick="openModal(this.src)">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+    </div>
+</main>
+
+<%- include('../layout/footer') %>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+     
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Modal Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function openModal(imageSrc) {
+    console.log("Image clicked:", imageSrc); // Debugging line
+    document.getElementById('modalImage').src = imageSrc;
+}
+</script>
+

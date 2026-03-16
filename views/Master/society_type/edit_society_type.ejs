@@ -1,0 +1,99 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Society Type</h5>
+            <form class="row g-3 needs-validation" id="editsocietytypeForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputsocietytypeName" class="form-label">Society Type<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputsocietytypeName" name="name" value="<%= societytype.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a society type name.
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin: 30px 0;">
+                    <label class="form-label" for="inputsocietytypeImage">Image</label>
+                    <input type="file" class="form-control" id="inputsocietytypeImage" name="image" />
+                    <div class="invalid-feedback">
+                        Please select a valid image file.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editsocietytypeForm = document.getElementById('editsocietytypeForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation feedback
+            editsocietytypeForm.classList.remove('was-validated');
+            editsocietytypeForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editsocietytypeForm.checkValidity()) {
+                editsocietytypeForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editsocietytypeForm);
+                const response = await fetch('/update_societytype/<%= societytype.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    // Success message using SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Society Type updated successfully!',
+                        timer: 2000, // Optional, automatically close after 2 seconds
+                        timerProgressBar: true, // Optional, show progress bar
+                        didClose: () => {
+                            window.location.href = '/view_society_type'; // Redirect to another page
+                        }
+                    });
+                } else {
+                    // Error message using SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update Society Type'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Generic error message using SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update Society Type'
+                });
+            }
+        });
+    });
+</script>

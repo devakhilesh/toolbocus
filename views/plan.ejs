@@ -1,0 +1,190 @@
+<%- include('layout/header') %>
+<%- include('layout/sidebar') %>
+<main id="main" class="main">
+   <% if (permissions.includes(4)) { %> 
+
+    <div class="inline">
+      <button style="border-radius: 5px;
+        background-color: #fff;
+        padding: 7px;
+        border: 0px solid #fff; margin: 0 10px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Balance :<%= parseFloat(wallet).toFixed(2) %></button>
+      
+        <button type="button" class="btn btn-primary" style="border-radius: 5px;
+        padding: 7px; border: 1px solid #45c0c7; margin: 0 0px;" id="addFundsBtn">Add Funds</button>
+    </div>
+    <br>
+    <div id="userIdContainer" data-user-id="<%= userId %>"></div>
+    <div class="container"> 
+        <p style="color: blue; text-align: center; font-weight: 800; font-size: 30px;">Start Slow & Then Pay-As-You-Go</p>
+        <div id="priceSwitch" class="m-3" style="text-align: center;">
+        Plans & Pricing : 
+          <label>
+            <input type="radio" name="priceType" value="monthly" checked> Monthly
+          </label>
+          <label>
+            <input type="radio" name="priceType" value="yearly"> Yearly
+          </label>
+        </div>
+                
+        <div class="price-row mb-3"> 
+          <% plan.forEach(plan => { %>
+            <div class="price-col"> 
+              <p><%= plan.name %></p> 
+              <hr> 
+              <ul>
+                <li><%= plan.description %></li>
+              </ul>
+              <!-- Display both monthly and yearly prices -->
+              <h5 class="monthlyPrice"><%= plan.monthly_price %> /-<span></span></h5> 
+              <h5 class="yearlyPrice" style="display: none;"><%= plan.annual_price %> /-<span></span></h5> 
+              <br> <br>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary login-btn subscribeButton" data-plan-id="<%= plan.id %>">Subscribe</button>
+              </div>
+            </div> 
+          <% }) %>
+        </div> 
+    </div>
+     </table>
+                  <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+</main>
+    
+<%- include('layout/footer') %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  // JavaScript to switch between monthly and yearly prices
+  const priceSwitch = document.getElementById('priceSwitch');
+  const monthlyPrices = document.querySelectorAll('.monthlyPrice');
+  const yearlyPrices = document.querySelectorAll('.yearlyPrice');
+  
+  priceSwitch.addEventListener('change', (event) => {
+    const priceType = event.target.value;
+
+    if (priceType === 'monthly') {
+      monthlyPrices.forEach(price => price.style.display = 'block');
+      yearlyPrices.forEach(price => price.style.display = 'none');
+    } else if (priceType === 'yearly') {
+      monthlyPrices.forEach(price => price.style.display = 'none');
+      yearlyPrices.forEach(price => price.style.display = 'block');
+    }
+  });
+
+$('#addFundsBtn').click(function() {
+    Swal.fire({
+        title: 'Add Funds',
+        input: 'number',
+        inputLabel: 'Enter The Amount To Add',
+        inputPlaceholder: 'Enter amount',
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+        inputValidator: (value) => {
+            if (!value || isNaN(value) || parseFloat(value) <= 0) {
+                return 'Please enter a valid amount';
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const amount = parseFloat(result.value);
+            $.ajax({
+                url: '/addfunds',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ amount: amount }),
+                success: function(response) {
+                    // Log the entire response for debugging
+                    console.log(response);
+
+                    if (response.success) {
+                        // Optionally update the balance element
+                        $('#balance').text(parseFloat(response.newBalance).toFixed(2));
+
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Refresh the page after the alert is confirmed
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Failed',
+                            text: response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to add funds: ' + error,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+    });
+});
+
+
+
+
+  // Subscribe button click event
+$('.subscribeButton').click(function() {
+    const planId = $(this).data('plan-id');
+    const priceType = $('input[name="priceType"]:checked').val();
+    const userId = $('#userIdContainer').data('user-id');
+    
+    console.log('User ID:', userId);
+    console.log('Plan ID:', planId);
+    console.log('Price Type:', priceType);
+
+$.ajax({
+    url: '/subscribe',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({ userId: userId, planId: planId, priceType: priceType }),
+    success: function(response) {
+        console.log('Response from backend:', response); // Log the response for debugging
+
+        if (response.success) {
+            Swal.fire({
+                title: 'Success',
+                text: response.message,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                // Redirect to the dashboard after the success message is closed
+                window.location.href = '/dashboard';  // Change this to your dashboard URL
+            });
+        } else {
+            Swal.fire({
+                title: 'Failed',
+                text: response.message,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Failed to subscribe: ' + error,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+});
+
+
+</script>

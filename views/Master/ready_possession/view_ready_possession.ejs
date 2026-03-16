@@ -1,0 +1,107 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(39)) { %> 
+
+    <div class="text-left m-2">
+        <a href="/add_ready_possession" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Possession Details</a>
+    </div>
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Possession Details</h5>
+                        <table id="ReadyPossessionTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">Possession Details</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (ReadyPossessions && ReadyPossessions.length > 0) { %>
+                                    <% ReadyPossessions.forEach(detail => { %>
+                                        <tr>
+                                            <td><%= i++ %></td>
+                                            <td><%= detail.name %></td>
+                                            <td>
+                                                <a href="/edit_ready_possession/<%= detail.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                                                <button class="btn btn-sm btn-danger deleteReadyPossession" data-id="<%= detail.id %>"><i class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="3" style="text-align: center;" class="mt-4">No Ready Possession details found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../../layout/footer') %>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const ReadyPossessionTable = $('#ReadyPossessionTable').DataTable({
+        responsive: true
+    });
+
+    ReadyPossessionTable.on('init.dt', function () {
+        $('.dataTables_filter').addClass('d-none');
+        $('.dataTables_length').addClass('d-none');
+    });
+
+    $('#ReadyPossessionTable').on('click', '.deleteReadyPossession', async function () {
+        const id = $(this).data('id');
+        try {
+            const response = await fetch(`/delete_ready_possession/${id}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            if (response.ok) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Ready Possession details deleted successfully',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didClose: () => {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    }
+                });
+            } else {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to delete Ready Possession details.'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to delete Ready Possession details.'
+            });
+        }
+    });
+});
+</script>

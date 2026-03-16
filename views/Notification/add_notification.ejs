@@ -1,0 +1,123 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add Notification</h5>
+            <form class="row g-3" id="addNotificationForm">
+                <div class="col-md-12">
+                    <label for="inputNotificationTitle" class="form-label">Notification Title<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputNotificationTitle" name="notification_title">
+                    <div class="invalid-feedback">
+                        Notification title cannot be empty.
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="inputNotificationMessage" class="form-label">Message<span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="inputNotificationMessage" name="notification_message" rows="4"></textarea>
+                    <div class="invalid-feedback">
+                        Message cannot be empty.
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="inputRecipientType" class="form-label">Recipient Type<span class="text-danger">*</span></label>
+                    <select class="form-control" id="inputRecipientType" name="recipient_type">
+                        <option value="">Select Recipient Type</option>
+                        <option value="4">Users</option>
+                        <option value="1">Builders</option>
+                        <option value="3">Employee</option>
+                        <option value="2">CP</option>
+
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a recipient type.
+                    </div>
+                </div>
+         
+          
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitNotificationFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitNotificationFormButton').click(function () {
+            // Reset any previous error messages
+            $('.invalid-feedback').hide();
+            $('#inputNotificationTitle').removeClass('is-invalid');
+            $('#inputNotificationMessage').removeClass('is-invalid');
+            $('#inputRecipientType').removeClass('is-invalid');
+            $('#inputPriority').removeClass('is-invalid');
+
+            // Validate Notification Title
+            if ($('#inputNotificationTitle').val().trim() === '') {
+                $('#inputNotificationTitle').addClass('is-invalid');
+                $('#inputNotificationTitle').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Validate Notification Message
+            if ($('#inputNotificationMessage').val().trim() === '') {
+                $('#inputNotificationMessage').addClass('is-invalid');
+                $('#inputNotificationMessage').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Validate Recipient Type
+            if ($('#inputRecipientType').val().trim() === '') {
+                $('#inputRecipientType').addClass('is-invalid');
+                $('#inputRecipientType').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Form Data Submission
+            let formData = {
+                notification_title: $('#inputNotificationTitle').val(),
+                notification_message: $('#inputNotificationMessage').val(),
+                recipient_type: $('#inputRecipientType').val(),
+            };
+
+            // AJAX request to submit form data
+            $.ajax({
+                url: '/save_notification',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        // On success, show success message and redirect
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(function() {
+                            // Redirect to view_notifications page
+                            window.location.href = '/view_notification';
+                        });
+                    } else {
+                        // On failure, show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // On AJAX error, show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + xhr.responseText
+                    });
+                }
+            });
+        });
+    });
+</script>

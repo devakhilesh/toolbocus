@@ -1,0 +1,80 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add EMI Expectations</h5>
+            <form class="row g-3" id="multiStepForm" enctype="multipart/form-data">
+
+                <div class="col-md-12">
+                    <label for="inputEMIExpectations" class="form-label">EMI Expectations<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputEMIExpectations" name="name">
+                    <div class="invalid-feedback">
+                        EMI Expectations cannot be empty.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitFormButton').click(function () {
+
+            // Reset any previous error messages
+            $('#inputEMIExpectations').removeClass('is-invalid');
+            $('.invalid-feedback').hide();
+
+            // Validate EMI Expectations Name
+            if ($('#inputEMIExpectations').val().trim() === '') {
+                $('#inputEMIExpectations').addClass('is-invalid');
+                $('#inputEMIExpectations').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Form Data Submission
+            let formData = new FormData();
+            formData.append('name', $('#inputEMIExpectations').val());
+
+            $.ajax({
+                url: '/save_emi_expectations',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(function () {
+                            window.location.href = '/emi_expectations';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + xhr.responseText
+                    });
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,99 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Property Type</h5>
+            <form class="row g-3 needs-validation" id="editpropertytypeForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputpropertytypeName" class="form-label">Property Type<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputpropertytypeName" name="name" value="<%= propertytype.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a property type name.
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin: 30px 0;">
+                    <label class="form-label" for="inputpropertytypeImage">Image</label>
+                    <input type="file" class="form-control" id="inputpropertytypeImage" name="image" />
+                    <div class="invalid-feedback">
+                        Please select a valid image file.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editpropertytypeForm = document.getElementById('editpropertytypeForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation classes and messages
+            editpropertytypeForm.classList.remove('was-validated');
+            editpropertytypeForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editpropertytypeForm.checkValidity()) {
+                editpropertytypeForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editpropertytypeForm);
+                const response = await fetch('/update_propertytype/<%= propertytype.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    // Success message using SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Property Type updated successfully!',
+                        timer: 2000, // Optional, automatically close after 2 seconds
+                        timerProgressBar: true, // Optional, show progress bar
+                        didClose: () => {
+                            window.location.href = '/view_property_type'; // Redirect to another page
+                        }
+                    });
+                } else {
+                    // Error message using SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update Property Type'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Generic error message using SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update Property Type'
+                });
+            }
+        });
+    });
+</script>

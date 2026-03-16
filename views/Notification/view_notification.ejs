@@ -1,0 +1,176 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<main id="main" class="main">
+   <div class="text-left m-2">
+      <a href="/add_notification" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Notification</a>
+   </div>
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-12">
+            <div class="card top-selling overflow-auto">
+               <div class="card-body pb-0">
+                  <h5 class="card-title">All Notifications</h5>
+                  <table id="NotificationTable" class="table table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">Sr No.</th>
+                           <th scope="col">Title</th>
+                           <th scope="col">Message</th>
+                           <th scope="col">Recipient</th>
+                           <th scope="col">Status</th>
+                           <th scope="col">Date</th>
+                           <th scope="col">Actions</th>
+                        </tr>
+                     </thead>
+                    <tbody>
+    <% let i = 1; %>
+
+    <% if (notifications && notifications.length > 0) { %>
+
+        <% notifications.forEach(notification => { %>
+        <tr>
+            <td><%= i++ %></td>
+            <td><%= notification.notification_title %></td>
+            <td><%= notification.notification_message %></td>
+
+            <td>
+                <%= notification.recipient_type === 1 ? 'Builder'
+                : notification.recipient_type === 2 ? 'CP'
+                : notification.recipient_type === 3 ? 'Employee'
+                : notification.recipient_type === 4 ? 'User'
+                : 'Unknown' %>
+            </td>
+
+            <td style="color:<%= notification.status === 1 ? 'green' : 'red' %>;">
+                <%= notification.status === 1 ? 'Active' : 'Deactive' %>
+            </td>
+
+            <td><%= new Date(notification.created_at).toLocaleDateString() %></td>
+
+            <td>
+                <button class="btn btn-sm btn-danger deleteNotification"
+                    data-id="<%= notification.id %>">
+                    <i class="bi bi-trash"></i>
+                </button>
+
+                <button class="btn btn-sm <%= notification.status === 1 ? 'btn-danger' : 'btn-success' %> toggleStatus"
+                    data-id="<%= notification.id %>"
+                    data-status="<%= notification.status %>">
+
+                    <%= notification.status === 1 ? 'Deactivate' : 'Activate' %>
+                </button>
+            </td>
+        </tr>
+        <% }) %>
+
+    <% } else { %>
+
+        <tr>
+            <td colspan="7" style="text-align:center;">No Notifications found.</td>
+        </tr>
+
+    <% } %>
+</tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>
+<%- include('../layout/footer') %>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+       const NotificationTable = $('#NotificationTable').DataTable({
+           responsive: true
+       });
+   
+       NotificationTable.on('init.dt', function () {
+           $('.dataTables_filter').addClass('d-none');
+           $('.dataTables_length').addClass('d-none');
+       });
+   
+       $('#NotificationTable').on('click', '.deleteNotification', async function () {
+           const notificationId = $(this).data('id');
+           try {
+               const response = await fetch(`/delete_notification/${notificationId}`, {
+                   method: 'DELETE'
+               });
+               const data = await response.json();
+               if (response.ok) {
+                   await Swal.fire({
+                       icon: 'success',
+                       title: 'Success',
+                       text: 'Notification deleted successfully',
+                       timer: 1500,
+                       timerProgressBar: true,
+                       didClose: () => {
+                           setTimeout(() => {
+                               window.location.reload();
+                           }, 500);
+                       }
+                   });
+               } else {
+                   await Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to Delete Notification.'
+                   });
+               }
+           } catch (error) {
+               console.error('Error:', error);
+               await Swal.fire({
+                   icon: 'error',
+                   title: 'Error',
+                   text: 'Failed to Delete Notification.'
+               });
+           }
+       });
+   });
+   
+   
+   $('#NotificationTable').on('click', '.toggleStatus', async function () {
+   const notificationId = $(this).data('id');
+   const currentStatus = $(this).data('status');
+   const newStatus = currentStatus === 1 ? 0 : 1; // Toggle status
+   
+   try {
+       const response = await fetch(`/changestatus_notification/${notificationId}`, {
+           method: 'POST', // Use PATCH for updating
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({ status: newStatus }) // Send new status
+       });
+       const data = await response.json();
+       if (response.ok) {
+           await Swal.fire({
+               icon: 'success',
+               title: 'Success',
+               text: `Notification ${newStatus === 1 ? 'activated' : 'deactivated'} successfully`,
+               timer: 1500,
+               timerProgressBar: true,
+               didClose: () => {
+                   setTimeout(() => {
+                       window.location.reload();
+                   }, 500);
+               }
+           });
+       } else {
+           await Swal.fire({
+               icon: 'error',
+               title: 'Error',
+               text: 'Failed to change notification status.'
+           });
+       }
+   } catch (error) {
+       console.error('Error:', error);
+       await Swal.fire({
+           icon: 'error',
+           title: 'Error',
+           text: 'Failed to change notification status.'
+       });
+   }
+   });
+   
+</script>

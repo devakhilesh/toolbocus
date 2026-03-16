@@ -1,0 +1,716 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<style>
+  :root {
+    --brand: #4154f1;
+    --brand-light: #eef0ff;
+    --success: #2eca6a;
+    --danger: #ff4f5b;
+    --warning: #ffbc57;
+    --text-muted: #6c757d;
+    --card-shadow: 0 4px 24px rgba(65,84,241,0.07);
+  }
+
+  .avatar-initials {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--brand);
+    background: var(--brand-light);
+    border: 2px solid #c7cffe;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-card {
+    border-radius: 14px;
+    border: none;
+    box-shadow: var(--card-shadow);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #fff;
+  }
+
+  .stat-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .stat-icon.blue   { background: var(--brand-light); color: var(--brand); }
+  .stat-icon.orange { background: #fff5e6; color: var(--warning); }
+
+  .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 2px; }
+  .stat-value { font-size: 26px; font-weight: 700; color: #2d3748; line-height: 1; }
+
+  .main-card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
+
+  .main-card .card-header {
+    background: #fff;
+    border-bottom: 1px solid #f0f2ff;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .main-card .card-header h5 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 16px;
+    color: #2d3748;
+  }
+
+  #usersTable thead tr th {
+    background: #f8f9ff;
+    color: #4154f1;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #eef0ff;
+    padding: 14px 16px;
+    white-space: nowrap;
+  }
+
+  #usersTable tbody tr { transition: background 0.15s; }
+  #usersTable tbody tr:hover { background: #f8f9ff; }
+
+  #usersTable tbody td {
+    padding: 12px 16px;
+    vertical-align: middle;
+    font-size: 13.5px;
+    border-bottom: 1px solid #f5f6ff;
+    color: #3d4a5c;
+  }
+
+  .phone-badge {
+    background: #f0f2ff;
+    color: #4154f1;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+  }
+
+  .profile-badge-complete {
+    background: #e8f5ff;
+    color: #0d7dd4;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .profile-badge-incomplete {
+    background: #fff8e6;
+    color: #c77b00;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .btn-add {
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(65,84,241,0.25);
+  }
+
+  .btn-add:hover {
+    background: #3040d0;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(65,84,241,0.35);
+  }
+
+  .btn-view-sm {
+    background: #eef0ff;
+    color: var(--brand);
+    border: none;
+    border-radius: 7px;
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    font-size: 14px;
+  }
+
+  .btn-view-sm:hover { background: var(--brand); color: #fff; }
+
+  .btn-delete-sm {
+    background: #fff0f0;
+    color: var(--danger);
+    border: none;
+    border-radius: 7px;
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    font-size: 14px;
+  }
+
+  .btn-delete-sm:hover { background: var(--danger); color: #fff; }
+
+  .modal-content {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(65,84,241,0.15);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, #4154f1, #6872f5);
+    border: none;
+    padding: 22px 28px;
+  }
+
+  .modal-header .modal-title { color: #fff; font-weight: 700; font-size: 18px; }
+  .modal-header .btn-close { filter: invert(1) brightness(2); }
+
+  .modal-body { padding: 28px; }
+  .modal-footer { padding: 16px 28px; border-top: 1px solid #f0f2ff; background: #fafbff; }
+
+  .form-label { font-size: 12px; font-weight: 700; color: #4154f1; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+
+  .form-control, .form-select {
+    border: 1.5px solid #e2e6ff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(65,84,241,0.12);
+  }
+
+  .btn-save {
+    background: linear-gradient(135deg, #4154f1, #6872f5);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .btn-save:hover {
+    background: linear-gradient(135deg, #3040d0, #5560e0);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(65,84,241,0.3);
+  }
+
+  .section-divider {
+    font-size: 11px;
+    font-weight: 700;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 18px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #eef0ff;
+  }
+  
+  .btn-block-sm {
+  background: #fff8e6;
+  color: #c77b00;
+  border: none;
+  border-radius: 7px;
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-size: 14px;
+}
+.btn-block-sm:hover { background: #c77b00; color: #fff; }
+
+  .info-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f5f6ff; }
+  .info-row:last-child { border-bottom: none; }
+  .info-key { font-size: 11px; font-weight: 700; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px; width: 130px; flex-shrink: 0; }
+  .info-val { font-size: 13.5px; color: #2d3748; font-weight: 500; }
+
+  .empty-state { padding: 48px 0; text-align: center; color: var(--text-muted); }
+  .empty-state i { font-size: 40px; color: #c7cffe; margin-bottom: 12px; display: block; }
+</style>
+
+<main id="main" class="main">
+  <div class="pagetitle d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h1 style="font-size:22px; font-weight:800; color:#2d3748; margin:0;">User Management</h1>
+      <nav><ol class="breadcrumb" style="font-size:12px; margin:4px 0 0;">
+        <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+        <li class="breadcrumb-item active">Users</li>
+      </ol></nav>
+    </div>
+    <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal">
+      <i class="bi bi-person-plus-fill"></i> Add New User
+    </button>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="bi bi-people-fill"></i></div>
+        <div>
+          <div class="stat-label">Total Users</div>
+          <div class="stat-value"><%= users ? users.length : 0 %></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="stat-card">
+        <div class="stat-icon orange"><i class="bi bi-person-check-fill"></i></div>
+        <div>
+          <div class="stat-label">Complete Profiles</div>
+          <div class="stat-value"><%= users ? users.filter(u => u.is_profile_complete == 1).length : 0 %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="card main-card">
+    <div class="card-header">
+      <h5><i class="bi bi-people me-2" style="color:#4154f1;"></i>All Users</h5>
+      <div class="d-flex gap-2">
+        <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Quick search..."
+          style="width:200px; border-radius:8px; border:1.5px solid #e2e6ff; font-size:13px;">
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table id="usersTable" class="table mb-0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Profile</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (users && users.length > 0) { %>
+              <% users.forEach((user, index) => { %>
+              <tr>
+                <td style="color:#a0aec0; font-weight:600; font-size:12px;"><%= index + 1 %></td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <% if (user.full_name) { %>
+                      <div class="avatar-initials"><%= user.full_name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase() %></div>
+                    <% } else { %>
+                      <div class="avatar-initials" style="color:#a0aec0; background:#f5f6fa; border-color:#e2e6ff;"><i class="bi bi-person"></i></div>
+                    <% } %>
+                    <div>
+                      <div style="font-weight:700; font-size:13.5px; color:#2d3748;"><%= user.full_name || '—' %></div>
+                      <div style="font-size:11px; color:#a0aec0;">ID #<%= user.id %></div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="phone-badge"><%= user.phone_number %></span></td>
+                <td style="font-size:13px; color:#5a6a7e;"><%= user.email || '—' %></td>
+                <td style="font-size:13px; text-transform:capitalize;"><%= user.gender || '—' %></td>
+                <td>
+                  <% if (user.is_profile_complete == 1) { %>
+                    <span class="profile-badge-complete"><i class="bi bi-check2-all me-1"></i>Complete</span>
+                  <% } else { %>
+                    <span class="profile-badge-incomplete"><i class="bi bi-clock me-1"></i>Pending</span>
+                  <% } %>
+                </td>
+                
+                <td>
+  <% if (user.status === 'blocked') { %>
+    <span class="badge bg-danger">Blocked</span>
+  <% } else { %>
+    <span class="badge bg-success">Active</span>
+  <% } %>
+</td>
+                <td style="font-size:12px; color:#a0aec0; white-space:nowrap;">
+                  <%= user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '—' %>
+                </td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn-view-sm viewUser" title="View Details"
+                      data-id="<%= user.id %>"
+                      data-name="<%= user.full_name || '' %>"
+                      data-phone="<%= user.phone_number %>"
+                      data-email="<%= user.email || '' %>"
+                      data-dob="<%= user.date_of_birth || '' %>"
+                      data-gender="<%= user.gender || '' %>"
+                      data-location="<%= user.location || '' %>"
+                      data-complete="<%= user.is_profile_complete %>"
+                      data-joined="<%= user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '' %>">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn-block-sm blockUser" title="<%= user.status === 'blocked' ? 'Unblock' : 'Block' %> User"
+  data-id="<%= user.id %>"
+  data-status="<%= user.status || 'active' %>">
+  <% if (user.status === 'blocked') { %>
+    <i class="bi bi-unlock"></i>
+  <% } else { %>
+    <i class="bi bi-slash-circle"></i>
+  <% } %>
+</button>
+                    <button class="btn-delete-sm deleteUser" title="Delete User" data-id="<%= user.id %>">
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <% }) %>
+            <% } else { %>
+            <tr>
+              <td colspan="9">
+                <div class="empty-state">
+                  <i class="bi bi-people"></i>
+                  <div style="font-weight:600; margin-bottom:4px;">No users yet</div>
+                  <div style="font-size:13px;">Users who sign up via the mobile app will appear here.</div>
+                </div>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ===== ADD USER MODAL ===== -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-plus-fill me-2"></i>Add New User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="addUserAlert" class="alert d-none" role="alert"></div>
+
+        <div class="section-divider">Account Info</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text" style="border:1.5px solid #e2e6ff; border-right:none; border-radius:10px 0 0 10px; background:#f8f9ff; color:#4154f1; font-weight:700; font-size:13px;">+91</span>
+              <input type="tel" id="add_phone" class="form-control" placeholder="9876543210"
+                style="border-left:none; border-radius:0 10px 10px 0;" maxlength="10">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="add_email" class="form-control" placeholder="user@example.com">
+          </div>
+        </div>
+
+        <div class="section-divider">Personal Details</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="add_fullname" class="form-control" placeholder="John Doe">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" id="add_dob" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Gender</label>
+            <select id="add_gender" class="form-select">
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Location</label>
+            <input type="text" id="add_location" class="form-control" placeholder="City, State">
+          </div>
+        </div>
+
+        <div class="section-divider">Settings</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Profile Complete</label>
+            <select id="add_profile_complete" class="form-select">
+              <option value="0">Pending</option>
+              <option value="1">Complete</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <div class="form-check" style="margin-top:4px;">
+              <input class="form-check-input" type="checkbox" id="add_terms" value="1">
+              <label class="form-check-label" for="add_terms" style="font-size:13px;">Terms & Privacy Policy Accepted</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          style="border-radius:10px; font-size:13px;">Cancel</button>
+        <button type="button" class="btn-save" id="saveUserBtn">
+          <i class="bi bi-check-lg me-1"></i>Save User
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VIEW USER MODAL ===== -->
+<div class="modal fade" id="viewUserModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-person-badge-fill me-2"></i>User Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center gap-3 mb-4 p-3" style="background:#f8f9ff; border-radius:12px;">
+          <div id="view_avatar" class="avatar-initials" style="width:56px; height:56px; font-size:20px;"></div>
+          <div>
+            <div id="view_name" style="font-size:17px; font-weight:800; color:#2d3748;"></div>
+            <div id="view_phone_top" style="font-size:12px; color:#4154f1; font-family:'Courier New'; font-weight:600;"></div>
+          </div>
+        </div>
+        <div id="viewInfoRows"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layout/footer') %>
+
+<script>
+$(document).ready(function () {
+
+  // ── DataTable ──
+  $('#usersTable').DataTable({
+    pageLength: 10,
+    order: [[0, 'asc']],
+    columnDefs: [{ orderable: false, targets: 8 }],
+    language: { search: '', searchPlaceholder: 'Search table...' }
+  });
+
+  // Quick search
+  $('#searchInput').on('keyup', function () {
+    $('#usersTable').DataTable().search($(this).val()).draw();
+  });
+
+  // ── View User ──
+  $('.viewUser').on('click', function () {
+    const d = $(this).data();
+    const name = d.name || 'Unknown';
+    const initials = name !== 'Unknown'
+      ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+      : '?';
+
+    $('#view_avatar').text(initials);
+    $('#view_name').text(name || '—');
+    $('#view_phone_top').text(d.phone);
+
+    const fields = [
+      ['ID',             '#' + d.id],
+      ['Phone',          d.phone],
+      ['Email',          d.email || '—'],
+      ['Date of Birth',  d.dob || '—'],
+      ['Gender',         d.gender ? d.gender.charAt(0).toUpperCase() + d.gender.slice(1) : '—'],
+      ['Location',       d.location || '—'],
+      ['Profile Status', d.complete == 1 ? '✅ Complete' : '⏳ Pending'],
+      ['Joined',         d.joined || '—'],
+    ];
+
+    let html = '';
+    fields.forEach(([k, v]) => {
+      html += `<div class="info-row"><div class="info-key">${k}</div><div class="info-val">${v}</div></div>`;
+    });
+    $('#viewInfoRows').html(html);
+
+    new bootstrap.Modal(document.getElementById('viewUserModal')).show();
+  });
+
+  // ── Delete User ──
+  $('.deleteUser').on('click', async function () {
+    const id = $(this).data('id');
+    const result = await Swal.fire({
+      title: 'Delete this user?',
+      text: 'All data associated with this user will be removed.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ff4f5b',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, delete!',
+      customClass: { popup: 'rounded-4' }
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`/admin/delete_user/${id}`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.status) {
+          Swal.fire({ title: 'Deleted!', text: 'User removed.', icon: 'success', timer: 1500, showConfirmButton: false });
+          setTimeout(() => location.reload(), 1600);
+        } else {
+          Swal.fire('Error', data.message || 'Could not delete user.', 'error');
+        }
+      } catch {
+        Swal.fire('Error', 'Server error.', 'error');
+      }
+    }
+  });
+
+  // ── Add User ──
+  $('#saveUserBtn').on('click', async function () {
+    const phone = $('#add_phone').val().trim();
+    if (!phone) {
+      showAddAlert('danger', 'Phone number is required.');
+      return;
+    }
+    if (!/^\d{10}$/.test(phone)) {
+      showAddAlert('danger', 'Enter a valid 10-digit phone number.');
+      return;
+    }
+
+    const payload = {
+      phone_number:        '+91' + phone,
+      full_name:           $('#add_fullname').val().trim() || null,
+      email:               $('#add_email').val().trim() || null,
+      date_of_birth:       $('#add_dob').val() || null,
+      gender:              $('#add_gender').val() || null,
+      location:            $('#add_location').val().trim() || null,
+      is_profile_complete: parseInt($('#add_profile_complete').val()),
+      terms_accepted:      $('#add_terms').is(':checked') ? 1 : 0
+    };
+
+    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>Saving...');
+
+    try {
+      const response = await fetch('/admin/add_user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+
+      if (data.status) {
+        bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+        Swal.fire({ title: 'User Added!', text: 'The user has been created successfully.', icon: 'success', timer: 1800, showConfirmButton: false });
+        setTimeout(() => location.reload(), 1900);
+      } else {
+        showAddAlert('danger', data.message || 'Failed to add user.');
+      }
+    } catch {
+      showAddAlert('danger', 'Server error. Please try again.');
+    } finally {
+      $(this).prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i>Save User');
+    }
+  });
+  
+  
+
+  // Reset modal on close
+  document.getElementById('addUserModal').addEventListener('hidden.bs.modal', () => {
+    ['add_phone', 'add_email', 'add_fullname', 'add_dob', 'add_location'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('add_gender').value = '';
+    document.getElementById('add_profile_complete').value = '0';
+    document.getElementById('add_terms').checked = false;
+    const alertEl = document.getElementById('addUserAlert');
+    alertEl.classList.add('d-none');
+    alertEl.textContent = '';
+  });
+
+  function showAddAlert(type, msg) {
+    const el = document.getElementById('addUserAlert');
+    el.className = `alert alert-${type}`;
+    el.textContent = msg;
+    el.classList.remove('d-none');
+    setTimeout(() => el.classList.add('d-none'), 4000);
+  }
+  
+  
+// ── Block / Unblock User ──
+$(document).on('click', '.blockUser', async function () {
+  const id = $(this).data('id');
+  const currentStatus = $(this).data('status');
+  const newStatus = currentStatus === 'blocked' ? 'active' : 'blocked';
+  const action = newStatus === 'blocked' ? 'Block' : 'Unblock';
+
+  const result = await Swal.fire({
+    title: `${action} this user?`,
+    text: newStatus === 'blocked'
+      ? 'This user will not be able to log in.'
+      : 'This user will be able to log in again.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: newStatus === 'blocked' ? '#ff4f5b' : '#2eca6a',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: `Yes, ${action}!`
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const response = await fetch(`/admin/block_user/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      const data = await response.json();
+      if (data.status) {
+        Swal.fire({
+          title: `${action}ed!`,
+          text: data.message,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        setTimeout(() => location.reload(), 1600);
+      } else {
+        Swal.fire('Error', data.message, 'error');
+      }
+    } catch {
+      Swal.fire('Error', 'Server error.', 'error');
+    }
+  }
+});
+});
+</script>

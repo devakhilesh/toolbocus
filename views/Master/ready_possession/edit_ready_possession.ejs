@@ -1,0 +1,88 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Possession Details</h5>
+            <form class="row g-3 needs-validation" id="editReadyPossessionForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputPossessionDetails" class="form-label">Possession Details<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputPossessionDetails" name="name" value="<%= ReadyPossession.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter possession details.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editReadyPossessionForm = document.getElementById('editReadyPossessionForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation feedback
+            editReadyPossessionForm.classList.remove('was-validated');
+            editReadyPossessionForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editReadyPossessionForm.checkValidity()) {
+                editReadyPossessionForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editReadyPossessionForm);
+                const response = await fetch('/update_ready_possession/<%= ReadyPossession.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Ready possession details updated successfully!',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didClose: () => {
+                            window.location.href = '/ready_possession';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update ready possession details'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update ready possession details'
+                });
+            }
+        });
+    });
+</script>

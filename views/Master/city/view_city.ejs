@@ -1,0 +1,206 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(39)) { %> 
+    <div class="text-left m-2">
+        <a href="/add_city" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Cities</a>
+    </div>
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Today</a></li>
+                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                            <li><a class="dropdown-item" href="#">This Year</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Cities</h5>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+                        </div>
+                        <table id="citiesTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                        
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">City Name</th>
+                                    <th scope="col">Image</th>
+                                    <!-- <th scope="col">Status</th> -->
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (cities && cities.length > 0) { %>
+                                    <% cities.forEach(city => { %>
+                                        <tr>
+                                            <!-- <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input city-checkbox" type="checkbox" data-id="<%= city.id %>">
+                                                    <label class="form-check-label" for="propertyCheck<%= city.id %>"></label>
+                                                </div>
+                                            </td> -->
+                                            <td><%= i++ %></td>
+                                            <td><%= city.name %></td>
+                                           <td class="fw-bold"><img src="<%= baseUrl + 'Images/city/' + city.image %>"></td>
+                                             <!-- <td style="color: <%= city.status === 1 ? 'green' : 'red' %>;">
+                                                <%= city.status === 1 ? 'Active' : 'Deactive' %>
+                                            </td> -->
+                                            <td>
+                                                <a href="/editcity/<%= city.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                                                <button class="btn btn-sm btn-danger delete-city" data-id="<%= city.id %>"><i class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                    
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;" class="mt-4">No cities found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                         <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize DataTable
+    const citiesTable = $('#citiesTable').DataTable({
+        responsive: true
+    });
+
+    // Hide DataTable search box and page length selector
+    citiesTable.on('init.dt', function () {
+        $('.dataTables_filter').addClass('d-none');
+        $('.dataTables_length').addClass('d-none');
+    });
+
+    // Event delegation for individual Delete buttons
+    $('#citiesTable').on('click', '.delete-city', async function () {
+        const cityId = $(this).data('id');
+        try {
+            const response = await fetch(`/delete_city/${cityId}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            if (response.ok) {
+                // Success message using SweetAlert2
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'City deleted successfully',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didClose: () => {
+                        // Reload the page after closing the Swal dialog
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500); // Adjust delay as needed
+                    }
+                });
+            } else {
+                // Error message using SweetAlert2
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to delete city'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Generic error message using SweetAlert2
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to delete city'
+            });
+        }
+    });
+
+    // Event listener for Delete Selected button
+    const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+    deleteSelectedBtn.addEventListener('click', async () => {
+        const selectedCityIds = Array.from(document.querySelectorAll('.city-checkbox:checked'))
+            .map(checkbox => checkbox.getAttribute('data-id'));
+
+        if (selectedCityIds.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No cities selected',
+                text: 'Please select at least one city to delete.',
+            });
+            return;
+        }
+
+        try {
+            const response = await fetch('/delete_cities', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cityIds: selectedCityIds })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Cities deleted successfully',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    onClose: () => {
+                        // Reload the page after closing the Swal dialog
+                        window.location.reload();
+                    }
+                });
+            } else {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to delete cities'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to delete cities'
+            });
+        }
+    });
+
+    // Event listener for checkboxes
+    $('#citiesTable').on('change', '.city-checkbox', function () {
+        const checkedCount = $('#citiesTable').find('.city-checkbox:checked').length;
+        if (checkedCount > 0) {
+            deleteSelectedBtn.classList.remove('d-none');
+        } else {
+            deleteSelectedBtn.classList.add('d-none');
+        }
+    });
+});
+
+
+</script>

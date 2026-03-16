@@ -1,0 +1,208 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<style>
+    .date-cell {
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden;    /* Ensures text does not overflow */
+        text-overflow: ellipsis; /* Adds ellipsis (...) if text is too long */
+        width: 100px;        /* Sets a fixed width for the date column */
+    }
+</style>
+
+<main id="main" class="main">
+     <% if (permissions.includes(17)) { %> 
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Today</a></li>
+                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                            <li><a class="dropdown-item" href="#">This Year</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Enquiries</h5>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+                        </div>
+                        <table id="tableId" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">User Name</th>
+                                    <% if (role == "Admin") { %> 
+                                    <th scope="col">Builder Name</th>
+                                    <% } %>
+                                    <th scope="col">Property Name</th>
+                                    <!--<th scope="col">Message</th>-->
+                                    <th scope="col" class="date-cell">Date</th>
+                                    <% if (role == "CP") { %> 
+                                    <th scope="col" class="date-cell">Activation Status</th>
+                                       <% } %>
+                                    <th scope="col" class="date-cell">Created At</th>
+                                    <!-- <th scope="col">Status</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (enquiries && enquiries.length > 0) { %>
+                              <% 
+function formatDateTime(dateString) {
+    const options = { 
+        year: '2-digit', 
+        month: '2-digit', 
+        day: '2-digit',
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false // Use 24-hour format
+    };
+    return new Date(dateString).toLocaleString(undefined, options);
+}
+
+function formatDate(dateString) {
+const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+%>
+                                    <% enquiries.forEach(enquiry => { %>
+                                        <tr>
+                                            <td><%= i++ %></td>
+                                            <td><%= enquiry.name %></td>
+                                            <% if (role == "Admin") { %> 
+                                            <td><%= enquiry.builder_name %></td>
+                                            <% } %>
+                                            <td><%= enquiry.site_name %></td>
+                                            <!--  <td><%= enquiry.message %></td> -->
+                                            <td class="date-cell"><%= formatDate(enquiry.date) %></td>
+                                            
+                                            <td>
+                                            <% if (role == "CP") { %> 
+                                           
+                                            
+                                            <% if (enquiry.cp_status === 'Pending') { %>
+        <a href="#" class="btn btn-sm btn-danger" onclick="confirmActivation(<%= enquiry.id %>)">
+            <i class="bi bi-lock"></i> <!-- Lock icon for inactive property -->
+        </a>
+    <% } %>    
+        <% } %>       
+         </td>
+                                            
+                                            <td class="date-cell"><%= formatDateTime(enquiry.created_at) %></td>
+                                           <!-- <td style="color: <%= enquiry.status === 1 ? 'green' : 'red' %>;">
+                                                <%= enquiry.status === 1 ? 'Active' : 'Deactive' %>
+                                            </td> -->
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;" class="mt-4">No enquiries found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <% } else { %>
+    <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+ <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+
+
+<script>
+    initializeDataTable('#tableId');
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Event listener for checkboxes
+    $('#enquiriesTable').on('change', '.enquiry-checkbox', function () {
+        const checkedCount = $('#enquiriesTable').find('.enquiry-checkbox:checked').length;
+        if (checkedCount > 0) {
+            deleteSelectedBtn.classList.remove('d-none');
+        } else {
+            deleteSelectedBtn.classList.add('d-none');
+        }
+    });
+});
+</script>
+<script>
+ function confirmActivation(Id) {
+    Swal.fire({
+        title: 'Unlock Enquiry?',
+        text: 'Unlocking Enquiry will charge ₹10. Do you want to proceed?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, activate it!',
+        cancelButtonText: 'No, cancel!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with activation logic here
+            // For example, make an AJAX call to activate the property
+            activateProperty(Id);
+        }
+    });
+}
+
+function activateProperty(Id) {
+    // Make the AJAX request to activate the property
+    fetch(`/activate_enquiry/${Id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())  // Parse the JSON response
+    .then(data => {
+        if (data.success) {
+            // If successful, show a success message with a progress bar
+            Swal.fire({
+                title: 'Activated!',
+                text: 'The Enquiry has been activated.',
+                icon: 'success',
+                timer: 1500,  // Set a timer for the progress bar (in ms)
+                timerProgressBar: true,  // Enable the progress bar
+                didClose: () => {
+                    // Reload the page after the timer ends
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500); // Delay before refreshing the page
+                }
+            });
+        } else {
+            // If there is an error, show an error message
+            Swal.fire(
+                'Error!',
+                data.message || 'There was an error activating the Enquiry.',
+                'error'
+            );
+        }
+    })
+    .catch(error => {
+        // Handle any network or other errors
+        console.error('Error:', error);
+        Swal.fire(
+            'Error!',
+            'There was a server error.',
+            'error'
+        );
+    });
+}
+
+
+</script>

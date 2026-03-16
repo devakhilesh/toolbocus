@@ -1,0 +1,88 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Average Budget</h5>
+            <form class="row g-3 needs-validation" id="editAvgBudgetForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputAvgBudget" class="form-label">Average Budget<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputAvgBudget" name="name" value="<%= AvgBudget.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter an Average Budget Name.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editAvgBudgetForm = document.getElementById('editAvgBudgetForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation feedback
+            editAvgBudgetForm.classList.remove('was-validated');
+            editAvgBudgetForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editAvgBudgetForm.checkValidity()) {
+                editAvgBudgetForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editAvgBudgetForm);
+                const response = await fetch('/update_avg_of_budget/<%= AvgBudget.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Average Budget updated successfully!',
+                        timer: 2000, 
+                        timerProgressBar: true, 
+                        didClose: () => {
+                            window.location.href = '/avg_of_budget'; 
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update Average Budget'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update Average Budget'
+                });
+            }
+        });
+    });
+</script>

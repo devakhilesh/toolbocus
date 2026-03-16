@@ -1,0 +1,81 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add Possession Details</h5>
+            <form class="row g-3" id="multiStepForm" enctype="multipart/form-data">
+
+                <div class="col-md-12">
+                    <label for="inputPossessionDetails" class="form-label">Possession Details<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputPossessionDetails" name="name">
+                    <div class="invalid-feedback">
+                        Possession details cannot be empty.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitFormButton').click(function () {
+
+            // Reset any previous error messages
+            $('#inputPossessionDetails').removeClass('is-invalid');
+            $('.invalid-feedback').hide();
+
+            // Validate Possession Details
+            if ($('#inputPossessionDetails').val().trim() === '') {
+                $('#inputPossessionDetails').addClass('is-invalid');
+                $('#inputPossessionDetails').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Form Data Submission
+            let formData = new FormData();
+            formData.append('name', $('#inputPossessionDetails').val());
+
+
+            $.ajax({
+                url: '/save_ready_possession',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(function () {
+                            window.location.href = '/ready_possession'; // Redirect to relevant page
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + xhr.responseText
+                    });
+                }
+            });
+        });
+    });
+</script>

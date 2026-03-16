@@ -1,0 +1,132 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(39)) { %> 
+
+    <div class="text-left m-4">
+        <a href="/add_flat_space" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Flat Space</a>
+    </div>
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                   
+
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Flat Space</h5>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+                        </div>
+                        <table id="flat_spaceTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                             
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">Flat Space Name</th>
+                                    <!--  <th scope="col">Status</th>-->
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (flat_spaces && flat_spaces.length > 0) { %>
+                                    <% flat_spaces.forEach(flat_space => { %>
+                                        <tr>
+                                            <!-- <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input city-checkbox" type="checkbox" data-id="<%= flat_space.id %>">
+                                                    <label class="form-check-label" for="propertyCheck<%= flat_space.id %>"></label>
+                                                </div>
+                                            </td> -->
+                                            <td><%= i++ %></td>
+                                            <td><%= flat_space.name %></td>
+                                             <!-- <td style="color: <%= flat_space.status === 1 ? 'green' : 'red' %>;">
+                                                 <%= flat_space.status === 1 ? 'Active' : 'Deactive' %>
+                                            </td>-->
+                                            
+                                            <td>
+                                                <a href="/editflatspace/<%= flat_space.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                                                <button class="btn btn-sm btn-danger flat_space" data-id="<%= flat_space.id %>"><i class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                    
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;" class="mt-4">No Flat Space found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize DataTable
+    const flatspaceTable = $('#flat_spaceTable').DataTable({
+        responsive: true
+    });
+
+    // Hide DataTable search box and page length selector
+    flatspaceTable.on('init.dt', function () {
+        $('.dataTables_filter').addClass('d-none');
+        $('.dataTables_length').addClass('d-none');
+    });
+
+    // Event delegation for individual Delete buttons
+    $('#flat_spaceTable').on('click', '.flat_space', async function () {
+        const id = $(this).data('id');
+        try {
+            const response = await fetch(`/delete_flat_space/${id}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            if (response.ok) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Flat Space deleted successfully',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didClose: () => {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    }
+                });
+            } else {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to Delete Flat Space.'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to Delete Flat Space.'
+            });
+        }
+    });
+
+
+
+ 
+});
+
+
+</script>

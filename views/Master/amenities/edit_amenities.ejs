@@ -1,0 +1,88 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Amenities</h5>
+            <form class="row g-3 needs-validation" id="editAmenitieseForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputAmenities" class="form-label">Amenities<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputAmenities" name="name" value="<%= Amenities.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a Amenities Name.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editAmenitieseForm = document.getElementById('editAmenitieseForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation feedback
+            editAmenitieseForm.classList.remove('was-validated');
+            editAmenitieseForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editAmenitieseForm.checkValidity()) {
+                editAmenitieseForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editAmenitieseForm);
+                const response = await fetch('/update_Amenities/<%= Amenities.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Amenities updated successfully!',
+                        timer: 2000, 
+                        timerProgressBar: true, 
+                        didClose: () => {
+                            window.location.href = '/view_Amenities'; 
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update Amenities'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update Amenities'
+                });
+            }
+        });
+    });
+</script>

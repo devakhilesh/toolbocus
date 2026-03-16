@@ -1,0 +1,101 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit City</h5>
+            <form class="row g-3" id="editCityForm" enctype="multipart/form-data">
+
+                <div class="col-md-12">
+                    <label for="inputCityName" class="form-label">City Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputCityName" name="name" value="<%= city.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a city name.
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin: 30px 0;">
+                    <label class="form-label" for="inputCityImage">Upload City Image</label>
+                    <input type="file" class="form-control" id="inputCityImage" name="image">
+                    <div class="invalid-feedback">
+                        Please select a valid image file.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editCityForm = document.getElementById('editCityForm');
+        const inputCityName = document.getElementById('inputCityName');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous error messages
+            editCityForm.classList.remove('was-validated');
+            inputCityName.classList.remove('is-invalid');
+            inputCityName.nextElementSibling.style.display = 'none';
+
+            // Validate form before submission
+            if (!editCityForm.checkValidity()) {
+                editCityForm.classList.add('was-validated');
+                if (inputCityName.validity.valueMissing) {
+                    inputCityName.classList.add('is-invalid');
+                    inputCityName.nextElementSibling.style.display = 'block';
+                }
+                return;
+            }
+
+            try {
+                const formData = new FormData(editCityForm);
+
+                const response = await fetch('/updateCity/<%= city.id %>', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    // Success message using SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'City updated successfully!',
+                        timer: 2000, // Optional, automatically close after 2 seconds
+                        timerProgressBar: true, // Optional, show progress bar
+                        didClose: () => {
+                            window.location.href = '/view_city'; // Redirect to another page
+                        }
+                    });
+                } else {
+                    // Error message using SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update city'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Generic error message using SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update city'
+                });
+            }
+        });
+    });
+</script>

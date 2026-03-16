@@ -1,0 +1,247 @@
+<%- include('layout/header') %>
+<style>
+.login-btn{
+width:220px;
+}
+</style>
+<body>
+<main id="register" class="register col-md-8 offset-md-2">
+
+    <div class="d-flex justify-content-center py-4">
+        <a href="#" class="logo d-flex align-items-center w-auto">
+          <img src="assets/img/propal.png" alt="">
+        </a>
+      </div><!-- End Logo -->
+
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center mt-2 pt-2">Let's Get You Started</h3>
+            <p class="text-center mt-2">Enter The Details To Get Going</p>
+            <form class="row g-3" id="registerForm">
+                <div class="col-md-6">
+                    <label for="inputName" class="form-label">Builder Name<span class="red">*</span></label>
+                    <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter Builder Name">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputContactName" class="form-label">Builder Contact Name<span class="red">*</span></label>
+                    <input type="text" class="form-control" id="inputContactName" name="contactname" placeholder="Enter Builder Contact Name">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputEmail" class="form-label">Email<span class="red">*</span></label>
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Enter Email-Id.">
+                </div>
+                
+
+            
+            <div class="col-md-6">
+    <label for="inputPhone" class="form-label">Phone<span class="red">*</span></label>
+    <div class="input-group">
+        <span class="input-group-text">+91</span>
+        <input type="text" class="form-control" id="inputPhone" name="mobile_no" placeholder="Enter Ph. No." pattern="\d{10}" title="Please enter a valid 10-digit phone number" required oninput="validatePhoneNumber(this);" onkeypress="return isNumeric(event);" maxlength="10">
+    </div>
+</div>
+
+
+
+                <div class="col-md-6">
+                    <label for="inputCompanyName" class="form-label">Company Name<span class="red">*</span></label>
+                    <input type="text" class="form-control" id="inputCompanyName" name="companyname" placeholder="Enter Company Name">
+                </div>
+                
+      
+                         <div class="col-md-6">
+                    <label for="inputCompanyAddress" class="form-label">Company Address<span class="red">*</span></label>
+                    <input type="text" class="form-control" id="inputCompanyAddress" name="companyaddress" placeholder="Enter Company Address">
+                </div>
+                
+
+
+         
+                <div class="col-md-6">
+                <label for="inputCompanyCIN" class="form-label">Company CIN<span class="red">*</span></label>
+                <input type="text" class="form-control" id="inputCompanyCIN" name="companyCIN" placeholder="Enter Company CIN" pattern="[A-Z0-9]{21}" maxlength="21" required>
+                <div class="invalid-feedback">Company CIN must be exactly 21 characters long and contain only capital letters.</div>
+            </div>
+
+                <div class="col-md-6">
+                    <label for="inputRERA" class="form-label">RERA Registration Number<span class="red">*</span></label>
+                    <input type="text" class="form-control" id="inputRERA" name="reraregnumber" placeholder="Enter RERA Registration Number">
+                </div>
+       
+     
+       
+                
+<div class="col-md-6">
+    <label for="inputCity" class="form-label">City<span class="red">*</span></label>
+    <select id="inputCity" class="form-select" name="city">
+  <option value=""selected disabled>Select City</option>
+  <% tbl_cities.forEach(city => { %>
+            <option value="<%= city.name %>"><%= city.name %></option>
+        <% }); %>
+    </select>
+</div>
+
+          
+    <div class="col-md-6">
+    <label for="inputState" class="form-label">State<span class="red">*</span></label>
+    <select id="inputState" class="form-select" name="state">
+        <option value="" selected disabled>Select State</option>
+        <% tbl_states.forEach(state => { %>
+            <option value="<%= state.name %>"><%= state.name %></option>
+        <% }); %>
+    </select>
+</div>
+
+          
+        
+                     <div class="col-md-6">
+                <label for="inputPostalCode" class="form-label">Postal Code<span class="red">*</span></label>
+                <input type="text" class="form-control" id="inputPostalCode" name="postalcode" placeholder="Enter Postal Code" maxlength="6" pattern="\d{6}" title="Please enter exactly 6 digits" required oninput="validatePostalCode(this);">
+            </div>
+            
+        <div class="col-md-6">
+    <label for="inputWebsite" class="form-label">Website URL</label>
+    <input type="text" class="form-control" id="inputWebsite" name="website" placeholder="Enter Website URL" pattern="https?://.+(\.[a-z]{2,})" title="Please enter a valid URL (e.g., https://example.com)" required oninput="validateURL(this);">
+    </div>
+
+<div class="col-md-12">
+    <label for="inputCompanyDetails" class="form-label">Company Description<span class="red">*</span></label>
+    <textarea class="form-control" id="inputCompanyDetails" name="companydetails" placeholder="Enter Company Description" rows="2" required></textarea>
+</div> 
+              <br><br>
+      <div class="text-center">
+      <button type="submit" class="btn btn-primary login-btn">Submit</button>
+      </div>
+
+                <div class="col-12 text-center">
+                    <p class="small mb-0">Already have account? <a href="/login">Login</a></p>
+                  </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        // Filter function
+        $("#inputState").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#inputState option").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+    
+     $(document).ready(function() {
+        // Filter function
+        $("#inputCity").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#inputCity option").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+    
+function validateURL(input) {
+    const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+    if (!urlPattern.test(input.value)) {
+        input.setCustomValidity("Please enter a valid URL (e.g., https://example.com)");
+    } else {
+        input.setCustomValidity("");
+    }
+}
+
+function validatePostalCode(input) {
+    if (input.value.length > 6) {
+        input.value = input.value.slice(0, 6);
+    }
+}
+
+function validatePhoneNumber(input) {
+    const phonePattern = /^\d{10}$/;
+    const invalidPatterns = /^(.)\1{9}$/; // This pattern checks for repeated digits like 3333333333
+
+    if (!phonePattern.test(input.value) || invalidPatterns.test(input.value)) {
+        input.setCustomValidity("Please enter a valid 10-digit phone number");
+    } else {
+        input.setCustomValidity("");
+    }
+}
+
+function isNumeric(event) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+$(document).ready(function() {
+    $('#registerForm').on('submit', function(e) {
+        e.preventDefault();
+        validateAndSubmitForm();
+    });
+
+    function validateAndSubmitForm() {
+        const companyCIN = $('#inputCompanyCIN').val();
+        const companyCINRegex = /^[A-Z0-9]{21}$/;
+
+        if (!companyCINRegex.test(companyCIN)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Company CIN must be exactly 21 characters long and contain only capital letters.',
+            });
+            return; // Prevent form submission if validation fails
+        }
+
+        let formData = $('#registerForm').serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '/registerformsubmit',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message,
+                    }).then(() => {
+                        $('#registerForm')[0].reset();
+                        window.location.href = '/login';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message,
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'An error occurred',
+                    text: xhr.responseText,
+                });
+            }
+        });
+    }
+
+    $('#inputPhone, #inputPostalCode').on('input', function() {
+        this.value = this.value.replace(/\D/g, '');
+    });
+
+    $('#inputCity, #inputState').on('input', function() {
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+    });
+});
+</script>
+
+</body>

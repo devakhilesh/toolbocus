@@ -1,0 +1,178 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<main id="main" class="main">
+   <% if (permissions.includes(23)) { %> 
+   <div class="text-left m-2">
+      <a href="/addpropertypage" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Properties</a>
+   </div>
+   <% } %>
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-12">
+            <div class="card top-selling overflow-auto">
+               <div class="card-body pb-0">
+                  <% if (permissions.includes(22)) { %> 
+                  <h5 class="card-title">All Properties</h5>
+                  <table id="tableId" class="table table-hover">
+                     <!-- Added id here -->
+                     <thead>
+                        <tr>
+                           <th scope="col">SR No.</th>
+                           <th scope="col">Property Name</th>
+                           <th scope="col">Location</th>
+                           <th scope="col">Price</th>
+                           <th scope="col">Total View</th>
+                           <th scope="col">Status</th>
+                           <th scope="col">Propal Suggest</th>
+                           <% if (permissions.includes(22) || permissions.includes(24) || permissions.includes(25)) { %> 
+                           <th scope="col">Actions</th>
+                           <% } %>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <% if (properties && properties.length > 0) { %>
+                        <% let i = 1; %>
+                        <% properties.forEach(property => { %>
+                        <tr>
+                           <td><%= i++ %></td>
+                           <td><a href="#"><img src="<%= property.upload_site_images %>" alt=""></a> <%= property.site_name %></td>
+                           <td class="fw-bold"><%= property.location %></td>
+                           <td><a href="#" class="text-primary fw-bold">₹ <%= property.price %></a></td>
+                           <td><a href="#" class="text-primary fw-bold"><%= property.total_views %></a></td>
+                           <td style="color: <%= property.status === 0 ? 'green' : 'red' %>;">
+                              <%= property.status === 0 ? 'Active' : 'Inactive' %>
+                           </td>
+                           <td class="propal-suggest" data-id="<%= property.id %>" style="color: <%= property.propal_suggest === 1 ? 'green' : 'red' %>;">
+                              <%= property.propal_suggest === 1 ? 'Active' : 'Inactive' %>
+                           </td>
+                           <% if (permissions.includes(22) || permissions.includes(24) || permissions.includes(25)) { %> 
+                           <td>
+                              <% if (permissions.includes(22)) { %> 
+                              <a href="/view_property/<%= property.id %>" class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
+                              <% } %>
+                              <% if (permissions.includes(24)) { %> 
+                              <a href="/edit_property/<%= property.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                              <% } %>
+                              <% if (permissions.includes(25)) { %> 
+                              <button class="btn btn-sm btn-danger deleteBuilder" data-id="<%= property.id %>"><i class="bi bi-trash"></i></button>
+                              <% } %>
+                           </td>
+                           <% } %>
+                        </tr>
+                        <% }) %>
+                        <% } else { %>
+                        <tr>
+                           <td colspan="7" style="text-align: center;" class="mt-4">No properties found.</td>
+                        </tr>
+                        <% } %>
+                     </tbody>
+                  </table>
+                  <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>
+<%- include('../layout/footer') %>
+<script>
+   $(document).ready(function() {
+       // Initialize DataTable
+       initializeDataTable('#tableId');
+   
+       // Existing code for handling propal-suggest
+       $('.propal-suggest').on('click', function() {
+           var cell = $(this);
+           var propertyId = cell.data('id');
+           var currentStatus = cell.text().trim();
+   
+           if (currentStatus === 'Inactive') {
+               Swal.fire({
+                   title: 'Activate Propal Suggest?',
+                   text: "Activating Propal Suggest will charge ₹10. Do you want to proceed?",
+                   icon: 'warning',
+                   showCancelButton: true,
+                   confirmButtonColor: '#3085d6',
+                   cancelButtonColor: '#d33',
+                   confirmButtonText: 'Submit',
+                   cancelButtonText: 'Cancel'
+               }).then((result) => {
+                   if (result.isConfirmed) {
+                       $.ajax({
+                           url: '/updatewallet', // Update this URL to your API endpoint
+                           method: 'POST',
+                           data: { propertyId: propertyId },
+                           success: function(response) {
+                               if (response.success) {
+                                   cell.text('Active').css('color', 'green');
+                                   Swal.fire('Activated!', response.message, 'success').then(() => {
+                                       location.reload();
+                                   });
+                               } else {
+                                   Swal.fire('Failed!', response.message, 'error');
+                               }
+                           },
+                           error: function() {
+                               Swal.fire('Error!', 'An unexpected error occurred.', 'error');
+                           }
+                       });
+                   }
+               });
+           }
+       });
+   
+       // Handle delete action
+       $('#tableId').on('click', '.deleteBuilder', async function () {
+           const propertyId = $(this).data('id'); // Changed variable name to propertyId
+   
+           const result = await Swal.fire({
+               title: 'Are you sure?',
+               text: "You won't be able to revert this!",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes, delete it!'
+           });
+   
+           if (result.isConfirmed) {
+               try {
+                   const response = await fetch(`/delete_property/${propertyId}`, {
+                       method: 'DELETE'
+                   });
+                   const data = await response.json();
+                   if (response.ok) {
+                       await Swal.fire({
+                           icon: 'success',
+                           title: 'Success',
+                           text: 'Property deleted successfully',
+                           timer: 1500,
+                           timerProgressBar: true,
+                           didClose: () => {
+                               setTimeout(() => {
+                                   window.location.reload();
+                               }, 500);
+                           }
+                       });
+                   } else {
+                       await Swal.fire({
+                           icon: 'error',
+                           title: 'Error',
+                           text: 'Failed to delete property.'
+                       });
+                   }
+               } catch (error) {
+                   console.error('Error:', error);
+                   await Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to delete property.'
+                   });
+               }
+           }
+       });
+   });
+   
+</script>

@@ -1,0 +1,76 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+
+<div class="pagetitle">
+<h3>User Subscriptions</h3>
+</div>
+
+<section class="section">
+<div class="card">
+<div class="card-body">
+
+<table class="table table-hover text-center">
+
+<thead class="table-dark">
+<tr>
+<th>ID</th>
+<th>User</th>
+<th>Plan</th>
+<th>Total Amount</th>
+<th>Remaining Balance</th>
+<th>Used Posts</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+
+<% if(subscriptions && subscriptions.length > 0){ %>
+
+<% let i = 1; %>
+
+<% subscriptions.forEach(function(sub){ %>
+
+<tr>
+
+<td><%= i++ %></td>
+<td><%= sub.user_name %></td>
+<td><%= sub.plan_name %></td>
+<td>₹ <%= sub.total_amount %></td>
+<td>₹ <%= sub.remaining_balance %></td>
+<td><%= sub.used_posts %></td>
+<td><%= sub.start_date ? new Date(sub.start_date).toLocaleDateString() : 'N/A' %></td>
+<td>
+<%= sub.end_date ? new Date(sub.end_date).toLocaleDateString() : 'N/A' %>
+</td>
+<td>
+<span class="badge <%= sub.status === 'active' ? 'bg-success' : 'bg-danger' %>">
+<%= sub.status %>
+</span>
+</td>
+
+</tr>
+
+<% }) %>
+
+<% } else { %>
+
+<tr>
+<td colspan="8">No user subscriptions found</td>
+</tr>
+
+<% } %>
+
+</tbody>
+</table>
+
+</div>
+</div>
+</section>
+
+</main>
+
+<%- include('../layout/footer') %>

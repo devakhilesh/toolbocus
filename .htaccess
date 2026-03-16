@@ -1,0 +1,5 @@
+PassengerAppRoot /home/u702188802/domains/toolbocs.com/public_html
+PassengerAppType node
+PassengerNodejs /opt/alt/alt-nodejs22/root/bin/node
+PassengerStartupFile server.js
+PassengerBaseURI /

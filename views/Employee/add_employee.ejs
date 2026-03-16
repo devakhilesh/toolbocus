@@ -1,0 +1,232 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(28)) { %> 
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add Employee</h5>
+            <form class="row g-3" id="addEmployeeForm" enctype="multipart/form-data">
+
+                <div class="col-md-6">
+                    <label for="inputName" class="form-label">Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputName" name="name">
+                    <div class="invalid-feedback">
+                        Name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputEmail" class="form-label">Email<span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="inputEmail" name="email">
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputPhone" class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputPhone" name="phone">
+                    <div class="invalid-feedback">
+                        Please enter a valid phone number.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputRole" class="form-label">Role<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputRole" name="role">
+                    <div class="invalid-feedback">
+                        Role cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputDepartment" class="form-label">Department<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputDepartment" name="department">
+                    <div class="invalid-feedback">
+                        Department cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputPassword" class="form-label">Password<span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="inputPassword" name="password">
+                    <div class="invalid-feedback">
+                        Password cannot be empty.
+                    </div>
+                </div>
+
+                <% if (role != 'Builder') { %> 
+                    <div class="col-md-6">
+                        <label for="inputBuilderID" class="form-label">Builder Name<span class="text-danger">*</span></label>
+                        <select id="inputBuilderID" class="form-select" name="builder_id">
+                            <option value="">Select</option>
+                            <% builders.forEach(builder => { %>
+                                <option value="<%= builder.id %>" style="color: black;"><%= builder.name %></option>
+                            <% }); %>
+                        </select>
+                        <div class="invalid-feedback">
+                            Builder name cannot be empty.
+                        </div>
+                    </div>
+                <% } else { %>
+                    <!-- Hidden input field to pass session ID as builder_id -->
+                    <input type="hidden" name="builder_id" value="<%= session.user.id %>">
+                <% } %>
+
+
+       <div class="col-md-6">
+    <label for="inputStatus" class="form-label">Status<span class="text-danger">*</span></label>
+    <select id="inputStatus" class="form-select" name="status" required>
+        <option value="">Select Status</option>
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+    </select>
+    <div class="invalid-feedback">
+        Status cannot be empty.
+    </div>
+</div>
+
+      
+                <div class="col-md-6">
+                    <label for="inputAddress" class="form-label">Address<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputAddress" name="address" required>
+                      <div class="invalid-feedback">
+        Address cannot be empty.
+    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitEmployeeFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitEmployeeFormButton').click(function () {
+            // Reset any previous error messages
+            $('.invalid-feedback').hide();
+            $('input').removeClass('is-invalid');
+
+            // Validate form fields
+            let valid = true;
+            if ($('#inputName').val().trim() === '') {
+                $('#inputName').addClass('is-invalid');
+                $('#inputName').next('.invalid-feedback').show();
+                valid = false;
+            }
+            
+            if ($('#inputEmail').val().trim() === '' || !isValidEmail($('#inputEmail').val().trim())) {
+                $('#inputEmail').addClass('is-invalid');
+                $('#inputEmail').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputPhone').val().trim() === '') {
+                $('#inputPhone').addClass('is-invalid');
+                $('#inputPhone').next('.invalid-feedback').text('Phone number cannot be empty.').show();
+                valid = false;
+            } else if ($('#inputPhone').val().trim().length > 10) {
+                $('#inputPhone').addClass('is-invalid');
+                $('#inputPhone').next('.invalid-feedback').text('Phone number cannot exceed 10 digits.').show();
+                valid = false;
+            } else if (!/^\d+$/.test($('#inputPhone').val().trim())) {
+                $('#inputPhone').addClass('is-invalid');
+                $('#inputPhone').next('.invalid-feedback').text('Phone number must contain only digits.').show();
+                valid = false;
+            }
+
+            if ($('#inputRole').val().trim() === '') {
+                $('#inputRole').addClass('is-invalid');
+                $('#inputRole').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputDepartment').val().trim() === '') {
+                $('#inputDepartment').addClass('is-invalid');
+                $('#inputDepartment').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputPassword').val().trim() === '') {
+                $('#inputPassword').addClass('is-invalid');
+                $('#inputPassword').next('.invalid-feedback').show();
+                valid = false;
+            }
+               if ($('#inputBuilderID').val().trim() === '') {
+                $('#inputBuilderID').addClass('is-invalid');
+                $('#inputBuilderID').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputStatus').val().trim() === '') {
+                $('#inputStatus').addClass('is-invalid');
+                $('#inputStatus').next('.invalid-feedback').show();
+                valid = false;
+            }
+                if ($('#inputAddress').val().trim() === '') {
+                $('#inputAddress').addClass('is-invalid');
+                $('#inputAddress').next('.invalid-feedback').show();
+                valid = false;
+            }
+
+            if (valid) {
+                // Prepare form data
+                let formData = {
+                    name: $('#inputName').val(),
+                    email: $('#inputEmail').val(),
+                    phone: $('#inputPhone').val(),
+                    role: $('#inputRole').val(),
+                    department: $('#inputDepartment').val(),
+                    password: $('#inputPassword').val(),
+                    builder_id: $('#inputBuilderID').val(),
+                    status: $('#inputStatus').val(),
+                    address: $('#inputAddress').val()
+                };
+
+                // Log values to verify
+                console.log("New Employee Data:", formData);
+
+                // AJAX request to submit form data
+                $.ajax({
+                    url: '/save_employee',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/view_employee';
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', xhr.responseText);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: xhr.responseText,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+
+        // Email validation function
+        function isValidEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+    });
+</script>

@@ -1,0 +1,132 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<main id="main" class="main">
+   <div class="text-left m-4" style="display:none";>
+      <a href="/add_employee" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Builder</a>
+   </div>
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-12">
+            <div class="card top-selling overflow-auto">
+               <div class="card-body pb-0">
+                  <% if (permissions.includes(35)) { %> 
+                  <h5 class="card-title">All Builders</h5>
+                  <div class="mb-3">
+                  </div>
+                  <table id="tableId" class="table table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">Sr No.</th>
+                           <th scope="col">Name</th>
+                           <th scope="col">Contact Name</th>
+                           <th scope="col">Email</th>
+                           <th scope="col">Phone</th>
+                           <th scope="col">Password</th>
+                           <th scope="col">Company Name</th>
+                           <th scope="col">Status</th>
+                           <% if (permissions.includes(36) || permissions.includes(37)) { %> 
+                           <th scope="col">Actions</th>
+                           <% } %>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <% let i = 1; %>
+                        <% if (builders && builders.length > 0) { %>
+                        <% builders.forEach(builder => { %>
+                        <tr>
+                           <td><%= i++ %></td>
+                           <td><%= builder.name %></td>
+                           <td><%= builder.contactname %></td>
+                           <td><%= builder.email %></td>
+                           <td><%= builder.mobile_no %></td>
+                           <td><%= builder.pass %></td>
+                           <td><%= builder.companyname %></td>
+                           <td style="color: <%= builder.status == '1' ? 'green' : 'red' %>;">
+                              <%= builder.status == '1' ? 'Active' : 'Inactive' %>
+                           </td>
+                           <% if (permissions.includes(36) || permissions.includes(37)) { %> 
+                           <td>
+                              <% if (permissions.includes(36)) { %> 
+                              <a href="/edit_builder/<%= builder.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                              <% } %>
+                              <% if (permissions.includes(37)) { %> 
+                              <button class="btn btn-sm btn-danger deleteBuilder" data-id="<%= builder.id %>"><i class="bi bi-trash"></i></button>
+                              <% } %>
+                           </td>
+                           <% } %>
+                        </tr>
+                        <% }) %>
+                        <% } else { %>
+                        <tr>
+                           <td colspan="8" style="text-align: center;">No Builder found.</td>
+                        </tr>
+                        <% } %>
+                     </tbody>
+                  </table>
+                  <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>
+<%- include('../layout/footer') %>
+<script>
+   $(document).ready(function() {
+       // Initialize the DataTable
+       const builderTable = initializeDataTable('#tableId');
+   
+       // Handle delete action
+       $('#tableId').on('click', '.deleteBuilder', async function () {
+           const builderId = $(this).data('id');
+   
+           const result = await Swal.fire({
+               title: 'Are you sure?',
+               text: "You won't be able to revert this!",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes, delete it!'
+           });
+   
+           if (result.isConfirmed) {
+               try {
+                   const response = await fetch(`/delete_builder/${builderId}`, {
+                       method: 'DELETE'
+                   });
+                   const data = await response.json();
+                   if (response.ok) {
+                       await Swal.fire({
+                           icon: 'success',
+                           title: 'Success',
+                           text: 'Builder deleted successfully',
+                           timer: 1500,
+                           timerProgressBar: true,
+                           didClose: () => {
+                               setTimeout(() => {
+                                   window.location.reload();
+                               }, 500);
+                           }
+                       });
+                   } else {
+                       await Swal.fire({
+                           icon: 'error',
+                           title: 'Error',
+                           text: 'Failed to delete builder.'
+                       });
+                   }
+               } catch (error) {
+                   console.error('Error:', error);
+                   await Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to delete builder.'
+                   });
+               }
+           }
+       });
+   });
+</script>

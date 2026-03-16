@@ -1,0 +1,365 @@
+<%- include('layout/header') %>
+<%- include('layout/sidebar') %>
+
+<main id="main" class="main">
+                          <% if (permissions.includes(2)) { %> 
+
+    <div class="pagetitle">
+      <h1>Profile</h1>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-2 d-flex flex-column align-items-center">
+
+              <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+              <h2 style="text-transform: capitalize;"><%= user[0].name %></h2>
+                  <% if (user.length > 0) { %>
+              <% if (user[0].role === 0) { %>
+                <h3  style="color: green;">Role: Admin</h3>
+              <% } else if (user[0].role === 1) { %>
+                <h3>Role: Builder</h3>
+              <% } else if (user[0].role === 2) { %>
+                <h3  style="color: green;">Role: CP</h3>
+              <% } else if (user[0].role === 3) { %>
+                <h3>Role: Employee</h3>
+              <% } else { %>
+                <h3  style="color: green;">Role: Unknown</h3>
+              <% } %>
+            <% } else { %>
+              <h3  style="color: green;">No user data available</h3>
+            <% } %>
+
+              <h6><%= user[0].email %></h6>
+              <h3><%= user[0].companyaddress %></h3>
+              <h6> Status : <% if (user[0].status === 1) { %> Active <% } else { %> Inactive <% } %></h6>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                </li>
+
+                <li class="nav-item" style="display:none;">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade  profile-overview" id="profile-overview">
+                  
+                  <h5 class="card-title">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-4 col-md-4 label">
+                   Role :
+    <% if (user[0].role === 1) { %>
+        Builder
+    <% } else { %>
+        Admin
+    <% } %>
+                    </div>
+                    <div class="col-lg-8 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-4 col-md-6 label">Email:<%= user[0].email %></div>
+                    <div class="col-lg-8 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 label">Contact:<%= user[0].mobile_no %></div>
+                  </div>
+
+        </div>
+
+   <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
+<form id="profileEditForm" action="/updateProfile" method="POST" enctype="multipart/form-data">
+  <div class="row mb-3">
+    <label for="profileImage" class="col-md-4 col-lg-4 col-form-label">Profile Image</label>
+    <div class="col-md-8 col-lg-8">
+      <div class="pt-2">
+        <input type="file" id="profileImage" name="profileImage">
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="name" class="col-md-4 col-lg-4 col-form-label">Name</label>
+    <div class="col-md-8 col-lg-8">
+      <input name="name" type="text" class="form-control" id="name" value="<%= user[0].name %>" required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="companyname" class="col-md-4 col-lg-4 col-form-label">Company</label>
+    <div class="col-md-8 col-lg-8">
+      <input name="companyname" type="text" class="form-control" id="companyname" value="<%= user[0].companyname %>" required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="companyaddress" class="col-md-4 col-lg-4 col-form-label">Address</label>
+    <div class="col-md-8 col-lg-8">
+      <input name="companyaddress" type="text" class="form-control" id="companyaddress" value="<%= user[0].companyaddress %>" required>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="mobile_no" class="col-md-4 col-lg-4 col-form-label">Phone</label>
+    <div class="col-md-8 col-lg-8">
+      <input name="mobile_no" type="text" class="form-control" id="mobile_no" value="<%= user[0].mobile_no %>" required>
+    </div>
+  </div>
+
+  <div class="text-center m-2">
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </div>
+</form>
+
+
+</div>
+
+
+                <div class="tab-pane fade pt-3" id="profile-settings">
+
+                  <!-- Settings Form -->
+                  <form>
+
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
+                      <div class="col-md-8 col-lg-9">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="changesMade" checked>
+                          <label class="form-check-label" for="changesMade">
+                            Changes made to your account
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="newProducts" checked>
+                          <label class="form-check-label" for="newProducts">
+                            Information on new products and services
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="proOffers">
+                          <label class="form-check-label" for="proOffers">
+                            Marketing and promo offers
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
+                          <label class="form-check-label" for="securityNotify">
+                            Security alerts
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-center m-2">
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form><!-- End settings Form -->
+
+                </div>
+
+          <div class="tab-pane fade pt-3" id="profile-change-password">
+  <!-- Change Password Form -->
+  <form id="changePasswordForm" action="/change-password" method="POST">
+    <div class="row mb-3">
+      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+      <div class="col-md-8 col-lg-9">
+        <input name="currentPassword" type="password" class="form-control" id="currentPassword" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+      <div class="col-md-8 col-lg-9">
+        <input name="newPassword" type="password" class="form-control" id="newPassword" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter Password</label>
+      <div class="col-md-8 col-lg-9">
+        <input name="renewPassword" type="password" class="form-control" id="renewPassword" required>
+      </div>
+    </div>
+
+    <div class="text-center m-2">
+      <button type="submit" class="btn btn-primary">Change Password</button>
+    </div>
+  </form><!-- End Change Password Form -->
+</div>
+
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <% } else { %>
+    <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+ <% } %>
+</main>
+  </main><!-- End #main -->
+
+  <%- include('layout/footer') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+  <!-- SweetAlert JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const profileEditForm = document.getElementById('profileEditForm');
+
+  if (profileEditForm) {
+    profileEditForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const formData = new FormData(profileEditForm); // Create FormData object
+
+      // Log the form data to verify its content
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      fetch('/updateProfile', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(result => {
+        console.log('Server response:', result); // Log the response to debug
+        if (result.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Profile updated successfully!',
+          }).then(() => {
+            window.location.reload(); // Reload the page after success
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: 'Failed to update profile: ' + result.message,
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while updating the profile.',
+        });
+      });
+    });
+  }
+
+
+
+  // Handle Change Password Form Submission
+  const changePasswordForm = document.getElementById('changePasswordForm');
+  if (changePasswordForm) {
+    changePasswordForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const renewPassword = document.getElementById('renewPassword').value;
+
+      if (newPassword !== renewPassword) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'New passwords do not match!',
+        });
+        return;
+      }
+
+      const data = {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        renewPassword: renewPassword
+      };
+
+      fetch('/changepassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.text()) // Use response.text() for debugging
+      .then(result => {
+        console.log('Server response:', result); // Log the response to debug
+        try {
+          const jsonResult = JSON.parse(result); // Parse JSON
+          if (jsonResult.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Password changed successfully!',
+            }).then(() => {
+              window.location.reload();
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Failed',
+              text: 'Failed: ' + jsonResult.message,
+            });
+          }
+        } catch (e) {
+          console.error('JSON parsing error:', e);
+          Swal.fire({
+            icon: 'error',
+            title: 'Parsing Error',
+            text: 'Failed to parse server response.',
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while changing the password.',
+        });
+      });
+    });
+  }
+});
+
+
+
+
+</script>
+
+
+
+  

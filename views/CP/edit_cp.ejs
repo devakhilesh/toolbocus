@@ -1,0 +1,178 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(33)) { %> 
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit cp</h5>
+            <form class="row g-3" id="editcpForm" enctype="multipart/form-data">
+
+                <input type="hidden" id="cpId" value="<%= cp.id %>">
+
+                <div class="col-md-6">
+                    <label for="inputName" class="form-label">Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputName" name="Name" value="<%= cp.name %>" required>
+                    <div class="invalid-feedback">
+                        Name cannot be empty.
+                    </div>
+                </div>
+
+       
+
+                <div class="col-md-6">
+                    <label for="inputEmail" class="form-label">Email<span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="inputEmail" name="email" value="<%= cp.email %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="inputPhone" class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputPhone" name="phone" value="<%= cp.mobile_no %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid phone number.
+                    </div>
+                </div>
+
+
+         
+
+                <div class="col-md-6">
+                    <label for="inputPassword" class="form-label">Password<span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="inputPassword" name="password" required>
+                    <div class="invalid-feedback">
+                        Password cannot be empty.
+                    </div>
+                </div>
+
+
+       <div class="col-md-6">
+    <label for="inputStatus" class="form-label">Status<span class="text-danger">*</span></label>
+    <select id="inputStatus" class="form-select" name="status" required>
+        <option value="">Select Status</option>
+        <option value="1" <%= cp.status == '1' ? 'selected' : '' %>>Active</option>
+        <option value="0" <%= cp.status == '0' ? 'selected' : '' %>>Inactive</option>
+    </select>
+    <div class="invalid-feedback">
+        Status cannot be empty.
+    </div>
+</div>
+
+
+      
+
+                <div class="col-md-6">
+                    <label for="inputAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="inputAddress" name="address" value="<%= cp.address %>">
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitcpFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <% } else { %>
+    <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+ <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitcpFormButton').click(function () {
+            // Reset any previous error messages
+            $('.invalid-feedback').hide();
+            $('input').removeClass('is-invalid');
+
+            // Validate form fields
+            let valid = true;
+            if ($('#inputName').val().trim() === '') {
+                $('#inputtName').addClass('is-invalid');
+                $('#inputName').next('.invalid-feedback').show();
+                valid = false;
+            }
+ 
+            if ($('#inputEmail').val().trim() === '' || !isValidEmail($('#inputEmail').val().trim())) {
+                $('#inputEmail').addClass('is-invalid');
+                $('#inputEmail').next('.invalid-feedback').show();
+                valid = false;
+            }
+            if ($('#inputPhone').val().trim() === '') {
+                $('#inputPhone').addClass('is-invalid');
+                $('#inputPhone').next('.invalid-feedback').show();
+                valid = false;
+            }
+ 
+       
+            if ($('#inputPassword').val().trim() === '') {
+                $('#inputPassword').addClass('is-invalid');
+                $('#inputPassword').next('.invalid-feedback').show();
+                valid = false;
+            }
+
+            if ($('#inputStatus').val().trim() === '') {
+                $('#inputStatus').addClass('is-invalid');
+                $('#inputStatus').next('.invalid-feedback').show();
+                valid = false;
+            }
+    
+
+            if (valid) {
+                // Prepare form data
+                let formData = {
+                    id: $('#cpId').val(),
+                    name: $('#inputName').val(),
+                    email: $('#inputEmail').val(),
+                    phone: $('#inputPhone').val(),
+                    role: $('#inputRole').val(),
+                    password: $('#inputPassword').val(),
+                    status: $('#inputStatus').val(),
+                    address: $('#inputAddress').val()
+                };
+
+                // Log values to verify
+                console.log("Updated cp Data:", formData);
+
+                // AJAX request to submit form data
+                $.ajax({
+                    url: '/updatecp/<%= cp.id %>',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/view_cp';
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', xhr.responseText);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: xhr.responseText,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+
+        // Email validation function
+        function isValidEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+    });
+</script>

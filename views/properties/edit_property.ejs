@@ -1,0 +1,309 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(24)) { %> 
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h3 style="text-align: center; color:#000; font-weight:800;">Edit Property</h3>
+            <p style="text-align: center">Update the details of your property</p>
+
+            <form class="row g-3" id="propertyForm" enctype="multipart/form-data">
+                <!-- General Details -->
+                <div class="col-md-6">
+                    <label for="inputName5" class="form-label">Schema/Site Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputName5" name="site_name" value="<%= property.site_name %>" required>
+                    <div class="invalid-feedback">Site name cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputLocation" class="form-label">Location<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputLocation" name="location" value="<%= property.location %>" required>
+                    <div class="invalid-feedback">Location cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputAddress" class="form-label">Address<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputAddress" name="address" value="<%= property.address %>" required>
+                    <div class="invalid-feedback">Address cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputCity" class="form-label">City<span class="text-danger">*</span></label>
+                    <select id="inputCity" class="form-select" name="city" required>
+                        <option value="">Select City</option>
+                        <% tbl_cities.forEach(city => { %>
+                            <option value="<%= city.name %>" <%= property.city === city.name ? 'selected' : '' %>><%= city.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">Please select a city.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputState" class="form-label">State<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="state" value="<%= property.state %>" required>
+                    <div class="invalid-feedback">State cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPostalCode" class="form-label">Postal Code<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="postal_code" value="<%= property.postal_code %>" required>
+                    <div class="invalid-feedback">Postal code cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputReraNumber" class="form-label">RERA Registration Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="rera_number" value="<%= property.rera_number %>" required>
+                    <div class="invalid-feedback">RERA registration number cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputDetailSideInfo" class="form-label">Detail Side Information<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="detail_side_info" value="<%= property.detail_side_info %>" required>
+                    <div class="invalid-feedback">Detail side information cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputInventory" class="form-label">Number of Inventory<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="no_of_inventory" value="<%= property.inventory_number %>" required>
+                    <div class="invalid-feedback">Number of inventory cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPrice" class="form-label">Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="price" value="<%= property.price %>" required>
+                    <div class="invalid-feedback">Price cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputStartingPrice" class="form-label">Starting Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="starting_price" value="<%= property.starting_price %>" required>
+                    <div class="invalid-feedback">Starting price cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPricePerSqft" class="form-label">Price Per Sq.Ft<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="price_per_sqft" value="<%= property.price_per_sqft %>" required>
+                    <div class="invalid-feedback">Price per sq.ft cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputArea" class="form-label">Area<span class="text-danger">*</span></label>
+                    <select class="form-select" name="area" required>
+                        <option value="">Select Area</option>
+                        <% tbl_cities.forEach(city => { %>
+                            <option value="<%= city.name %>" <%= property.area === city.name ? 'selected' : '' %>><%= city.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">Please select an area.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputTotalArea" class="form-label">Total Area in (Sq.ft)<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="total_area_sqft" value="<%= property.total_area_sqft %>" required>
+                    <div class="invalid-feedback">Total area cannot be empty.</div>
+                </div>
+
+                <br><br>
+
+                <!-- Site Details -->
+                <h3 style="text-align: center; color:#000; font-weight:800;">Site Details</h3>
+                <div class="col-md-6">
+                    <label for="inputBuiltUpArea" class="form-label">Built-up Area (Sq.ft)<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="built_up_area" value="<%= property.built_up_area %>" required>
+                    <div class="invalid-feedback">Built-up area cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputCarpetArea" class="form-label">Carpet Area (Sq.ft)<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="carpet_area" value="<%= property.carpet_area %>" required>
+                    <div class="invalid-feedback">Carpet area cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputBhkUnits" class="form-label">Number of BHK Units<span class="text-danger">*</span></label>
+                    <select class="form-select" name="no_of_bhk_units" required>
+                        <option value="">Select</option>
+                        <% tbl_flat_space.forEach(flat => { %>
+                            <option value="<%= flat.name %>" <%= property.no_of_bhk_units === flat.name ? 'selected' : '' %>><%= flat.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">Please select the number of BHK units.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputBankLoan" class="form-label">Bank Loan Availability<span class="text-danger">*</span></label>
+                     <select class="form-select" name="bank_loan_availability" required>
+        <option value="">Select</option>
+        <option value="Yes" <%= property.bank_loan_availability === 'Yes' ? 'selected' : '' %>>Yes</option>
+        <option value="No" <%= property.bank_loan_availability === 'No' ? 'selected' : '' %>>No</option>
+    </select>
+                    <div class="invalid-feedback">Bank loan availability cannot be empty.</div>
+                </div>
+                
+                
+       <div class="col-md-6">
+    <label for="inputSocietyType" class="form-label">Type of Society<span class="text-danger">*</span></label>
+    <select class="form-select" name="type_of_society" required>
+        <option value="">Select</option>
+        <% types_of_society.forEach(society => { %>
+            <option value="<%= society.name %>" 
+                <%= property.type_of_society === society.name ? 'selected' : '' %>>
+                <%= society.name %>
+            </option>
+        <% }); %>
+    </select>
+    <div class="invalid-feedback">Please select the type of society.</div>
+</div>
+
+<div class="col-md-6">
+    <label for="inputRooms" class="form-label">Number of Rooms<span class="text-danger">*</span></label>
+    <input type="number" value="<%= property.number_of_rooms %>" class="form-control" name="number_of_rooms" required>
+    <div class="invalid-feedback">Number of rooms cannot be empty.</div>
+</div>
+
+
+
+  <div class="col-md-6">
+                    <label for="inputPossession" class="form-label">Possession Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" name="possession_date" value="<%= property.possession_date %>" required>
+                    <div class="invalid-feedback">Possession Date cannot be empty.</div>
+                </div>
+      
+      
+                <div class="col-md-6">
+                    <label for="inputPossession" class="form-label">Possession Status<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="possession_status" value="<%= property.possession_status %>" required>
+                    <div class="invalid-feedback">Possession Status cannot be empty.</div>
+                </div>
+     
+                    <div class="col-md-6">
+                    <label for="inputno_of_flats_sold" class="form-label">No. Of Flats Sold<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="no_of_flats_sold" value="<%= property.no_of_flats_sold %>" required>
+                    <div class="invalid-feedback">No Of Flats Sold cannot be empty.</div>
+                </div>
+     
+     <div class="col-md-6">
+    <label for="inputNearbyFacilities" class="form-label">Nearby Facilities<span class="text-danger">*</span></label>
+    <select class="form-select" name="nearby_facility" required>
+        <option value="">Select</option>
+        <option value="Hospital" <%= property.nearby_facilities === 'Hospital' ? 'selected' : '' %>>Hospital</option>
+        <option value="Airport" <%= property.nearby_facilities === 'Airport' ? 'selected' : '' %>>Airport</option>
+        <option value="School" <%= property.nearby_facilities === 'School' ? 'selected' : '' %>>School</option>
+        <option value="Park" <%= property.nearby_facilities === 'Park' ? 'selected' : '' %>>Park</option>
+        <option value="Market" <%= property.nearby_facilities === 'Market' ? 'selected' : '' %>>Market</option>
+    </select>
+    <div class="invalid-feedback">Please select a nearby facility.</div>
+</div> 
+
+                <!-- Amenities -->
+                <br><br>
+                <h3 style="text-align: center; color:#000; font-weight:800;">Amenities</h3>
+                <% tbl_amenities.forEach(amenity => { %>
+                    <div class="col-md-4 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="amenity<%= amenity.id %>" name="amenities[]" value="<%= amenity.name %>" 
+                               <%= property.amenities.includes(amenity.name) ? 'checked' : '' %> />
+                        <label class="form-check-label" for="amenity<%= amenity.id %>"><%= amenity.name %></label>
+                    </div>
+                <% }); %>
+
+
+                <br><br>
+
+               <!-- File Upload -->
+<div class="row">
+    <div class="col-md-6">
+        <label for="inputSiteImage" class="form-label">Site Image</label>
+        <input type="file" class="form-control" id="inputSiteImage" name="upload_site_images">
+        <% if (property.upload_site_images) { %>
+            <img src="<%= baseUrl %>Images/property/<%= property.upload_site_images %>" alt="Site Image" class="img-fluid mt-2" style="width: 100%; max-height: 150px; object-fit: cover;">
+        <% } %>
+    </div>
+
+    <div class="col-md-6">
+        <label for="inputFlatImage" class="form-label">Flat Image</label>
+        <input type="file" class="form-control" id="inputFlatImage" name="upload_flat_images">
+        <% if (property.upload_flat_images) { %>
+            <img src="<%= baseUrl %>Images/property/<%= property.upload_flat_images %>" alt="Flat Image" class="img-fluid mt-2" style="width: 100%; max-height: 150px; object-fit: cover;">
+        <% } %>
+    </div>
+
+    <div class="col-md-6">
+        <label for="inputCompanyCert" class="form-label">Company Registration Certificate</label>
+        <input type="file" class="form-control" id="inputCompanyCert" name="upload_company_register_certificate">
+        <% if (property.upload_company_register_certificate) { %>
+            <img src="<%= baseUrl %>Images/property/<%= property.upload_company_register_certificate %>" alt="Company Register Image" class="img-fluid mt-2" style="width: 100%; max-height: 150px; object-fit: cover;">
+        <% } %>
+    </div>
+
+    <div class="col-md-6">
+        <label for="inputLayoutPlans" class="form-label">Site Layout Plans</label>
+        <input type="file" class="form-control" id="inputLayoutPlans" name="upload_site_layout_plans">
+        <% if (property.upload_site_layout_plans) { %>
+            <img src="<%= baseUrl %>Images/property/<%= property.upload_site_layout_plans %>" alt="Site Layout Plan Image" class="img-fluid mt-2" style="width: 100%; max-height: 150px; object-fit: cover;">
+        <% } %>
+    </div>
+
+    <div class="col-md-6">
+        <label for="inputOtherDoc" class="form-label">Other Documents</label>
+        <input type="file" class="form-control" id="inputOtherDoc" name="upload_other_document">
+        <% if (property.upload_other_document) { %>
+            <img src="<%= baseUrl %>Images/property/<%= property.upload_other_document %>" alt="Upload Other Documents Image" class="img-fluid mt-2" style="width: 100%; max-height: 150px; object-fit: cover;">
+        <% } %>
+    </div>
+</div>
+
+
+
+                <!-- Submit button -->
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary">Update Property</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+$(document).ready(function () {
+    $('#propertyForm').on('submit', function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        // Gather form data
+        let formData = new FormData(this); // Use 'this' to refer to the form
+
+        // Append amenities (checkboxes) values manually
+        $('input[name="amenities"]:checked').each(function () {
+            formData.append('amenities[]', $(this).val()); // Treat as an array
+        });
+
+        // Include the property ID for updating
+        const propertyId = '<%= property.id %>'; // Assuming you have the property ID available in your template
+
+        // AJAX request to submit form data for update
+        $.ajax({
+            url: `/update_property/${propertyId}`, // Update with your actual endpoint
+            type: 'POST',
+            data: formData,
+            contentType: false,  // Necessary for file uploads
+            processData: false,  // Prevent jQuery from processing the data
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message,
+                    }).then(() => {
+                        window.location.href = '/view_properties'; // Redirect on success
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message, // Display server error message
+                    });
+                }
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred: ' + xhr.responseText // Handle AJAX errors
+                });
+            }
+        });
+    });
+});
+
+</script>

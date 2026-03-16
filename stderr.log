@@ -1,0 +1,947 @@
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Error connecting to MySQL DB: Error: Access denied for user 'root'@'::1' (using password: NO)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at Object.<anonymous> (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/server.js:42:12)
+    at Module._compile (node:internal/modules/cjs/loader:1688:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1820:10)
+    at Module.load (node:internal/modules/cjs/loader:1423:32)
+    at Module._load (node:internal/modules/cjs/loader:1246:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'root'@'::1' (using password: NO)"
+}
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+Error connecting to MySQL DB: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at Object.<anonymous> (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/server.js:42:12)
+    at Module._compile (node:internal/modules/cjs/loader:1688:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1820:10)
+    at Module.load (node:internal/modules/cjs/loader:1423:32)
+    at Module._load (node:internal/modules/cjs/loader:1246:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Error connecting to MySQL DB: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at Object.<anonymous> (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/server.js:42:12)
+    at Module._compile (node:internal/modules/cjs/loader:1688:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1820:10)
+    at Module.load (node:internal/modules/cjs/loader:1423:32)
+    at Module._load (node:internal/modules/cjs/loader:1246:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+LOGIN ERROR: Error: Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)
+    at PromisePool.query (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/mysql2/promise.js:356:22)
+    at exports.login (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/controllers/BuilderController.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at multerMiddleware (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/multer/lib/make-middleware.js:13:41)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/layer.js:95:5)
+    at /home/u702188802/domains/lemonchiffon-bison-179312.hostingersite.com/public_html/node_modules/express/lib/router/index.js:284:15 {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'u702188802_toolbocs'@'::1' (using password: YES)"
+}
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+SyntaxError: Unexpected token '"', "
+  "phone_num"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at createStrictSyntaxError (/home/u702188802/domains/toolbocs.com/public_html/node_modules/body-parser/lib/types/json.js:169:10)
+    at parse (/home/u702188802/domains/toolbocs.com/public_html/node_modules/body-parser/lib/types/json.js:86:15)
+    at /home/u702188802/domains/toolbocs.com/public_html/node_modules/body-parser/lib/read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (/home/u702188802/domains/toolbocs.com/public_html/node_modules/raw-body/index.js:238:16)
+    at done (/home/u702188802/domains/toolbocs.com/public_html/node_modules/raw-body/index.js:227:7)
+    at IncomingMessage.onEnd (/home/u702188802/domains/toolbocs.com/public_html/node_modules/raw-body/index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Error setting directory to: /home/u702188802/domains/toolbocs.com/public_html/: Error: ENOENT: no such file or directory, chdir '/opt/alt/alt-nodejs22/root/usr/bin' -> '/home/u702188802/domains/toolbocs.com/public_html/'
+node:internal/modules/cjs/loader:1368
+  throw err;
+  ^
+
+Error: Cannot find module '/home/u702188802/domains/toolbocs.com/public_html//server.js'
+Require stack:
+- /usr/local/lsws/fcgi-bin/lsnode.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+    at Module._load (node:internal/modules/cjs/loader:1175:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1445:12)
+    at require (node:internal/modules/helpers:135:16)
+    at startApplication (/usr/local/lsws/fcgi-bin/lsnode.js:48:15)
+    at Object.<anonymous> (/usr/local/lsws/fcgi-bin/lsnode.js:16:1) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/usr/local/lsws/fcgi-bin/lsnode.js' ]
+}
+
+Node.js v22.18.0
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.

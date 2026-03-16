@@ -1,0 +1,91 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Location</h5>
+            <form class="row g-3 needs-validation" id="editlocationForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputlocationName" class="form-label">Location Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputlocationName" name="name" value="<%= location.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a location name.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editlocationForm = document.getElementById('editlocationForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation classes and messages
+            editlocationForm.classList.remove('was-validated');
+            editlocationForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editlocationForm.checkValidity()) {
+                editlocationForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editlocationForm);
+                const response = await fetch('/update_location/<%= location.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    // Success message using SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Location updated successfully!',
+                        timer: 2000, // Optional, automatically close after 2 seconds
+                        timerProgressBar: true, // Optional, show progress bar
+                        didClose: () => {
+                            window.location.href = '/view_location'; // Redirect to another page
+                        }
+                    });
+                } else {
+                    // Error message using SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update location'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Generic error message using SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update location'
+                });
+            }
+        });
+    });
+</script>

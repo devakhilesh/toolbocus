@@ -1,0 +1,108 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+   <div class="pagetitle">
+      <h1>Category Management</h1>
+   </div>
+
+   <div class="text-left m-2">
+      <a href="/admin/add_category" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add New Category</a>
+   </div>
+
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-12">
+            <div class="card top-selling overflow-auto">
+               <div class="card-body pb-0">
+                  <h5 class="card-title">All Categories</h5>
+                  
+                  <table id="categoryTable" class="table table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">Sr No.</th>
+                           <th scope="col">Icon</th>
+                           <th scope="col">Category Name</th>
+                           <th scope="col">Type</th>
+                           <th scope="col">Status</th>
+                           <th scope="col">Actions</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <% if (categories && categories.length > 0) { %>
+                           <% categories.forEach((cat, index) => { %>
+                           <tr>
+                              <td><%= index + 1 %></td>          
+                              <td>
+                                 <% if(cat.image_url) { %>
+                                    <img src="<%= cat.image_url %>" alt="icon" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">
+                                 <% } else { %>
+                                    <i class="bi bi-image" style="font-size: 24px;"></i>
+                                 <% } %>
+                              </td>
+                              <td><strong><%= cat.name %></strong></td>
+                              <td>
+                                 <%= cat.sub_id == 0 ? 'Main Category' : 'Sub Category' %>
+                              </td>
+                              <td>
+                                 <span class="badge <%= cat.status === 'active' || cat.status == '1' ? 'bg-success' : 'bg-danger' %>">
+                                    <%= cat.status === 'active' || cat.status == '1' ? 'Active' : 'Inactive' %>
+                                 </span>
+                              </td>
+                              <td>
+                                 <a href="/admin/edit_category/<%= cat.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                                 <button class="btn btn-sm btn-danger deleteCategory" data-id="<%= cat.id %>"><i class="bi bi-trash"></i></button>
+                              </td>
+                           </tr>
+                           <% }) %>
+                        <% } else { %>
+                        <tr>
+                           <td colspan="6" class="text-center">No categories found.</td>
+                        </tr>
+                        <% } %>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+   $(document).ready(function() {
+       // Initialize DataTable
+       $('#categoryTable').DataTable();
+   
+       // Handle Delete
+       $('.deleteCategory').on('click', async function () {
+           const id = $(this).data('id');
+   
+           const result = await Swal.fire({
+               title: 'Delete Category?',
+               text: "This will affect listings under this category!",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#d33',
+               confirmButtonText: 'Yes, delete it!'
+           });
+   
+           if (result.isConfirmed) {
+               try {
+                   const response = await fetch(`/admin/delete_category/${id}`, { method: 'DELETE' });
+                   const data = await response.json();
+                   if (data.status) {
+                       Swal.fire('Deleted!', 'Category removed.', 'success').then(() => location.reload());
+                   } else {
+                       Swal.fire('Error', 'Could not delete.', 'error');
+                   }
+               } catch (error) {
+                   Swal.fire('Error', 'Server error.', 'error');
+               }
+           }
+       });
+   });
+</script>
+<%- include('../layout/sidebar') %>

@@ -1,0 +1,88 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit EMI Expectation</h5>
+            <form class="row g-3 needs-validation" id="editEMIExpectationForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputEMIExpectation" class="form-label">EMI Expectation<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputEMIExpectation" name="name" value="<%= EMIExpectation.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter an EMI Expectation Name.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editEMIExpectationForm = document.getElementById('editEMIExpectationForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation feedback
+            editEMIExpectationForm.classList.remove('was-validated');
+            editEMIExpectationForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editEMIExpectationForm.checkValidity()) {
+                editEMIExpectationForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editEMIExpectationForm);
+                const response = await fetch('/update_emi_expectation/<%= EMIExpectation.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'EMI Expectation updated successfully!',
+                        timer: 2000, 
+                        timerProgressBar: true, 
+                        didClose: () => {
+                            window.location.href = '/emi_expectations'; 
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update EMI Expectation'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update EMI Expectation'
+                });
+            }
+        });
+    });
+</script>

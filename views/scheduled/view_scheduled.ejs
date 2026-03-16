@@ -1,0 +1,139 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<style>
+   .date-cell {
+   white-space: nowrap; /* Prevents text from wrapping */
+   overflow: hidden;    /* Ensures text does not overflow */
+   text-overflow: ellipsis; /* Adds ellipsis (...) if text is too long */
+   width: 100px;        /* Sets a fixed width for the date column */
+   }
+</style>
+<main id="main" class="main">
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-12">
+            <div class="card top-selling overflow-auto">
+               <div class="card-body pb-0">
+                  <% if (permissions.includes(9)) { %> 
+                  <h5 class="card-title">All Scheduled</h5>
+                  <div class="mb-3">
+                     <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+                  </div>
+                  <table id="scheduledTable" class="table table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">Sr No.</th>
+                           <th scope="col">User Name</th>
+                           <th scope="col">Property Name</th>
+                           <th scope="col" class="date-cell">Date</th>
+                           <th scope="col">Created At</th>
+                           <% if (permissions.includes(11)) { %> 
+                           <th scope="col">Status</th>
+                           <% } %>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <% 
+                           // Define formatting functions here
+                           function formatDate(dateString) {
+                               const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+                               return new Date(dateString).toLocaleDateString(undefined, options);
+                           }
+                           
+                           function formatCreatedAt(dateString) {
+                               const date = new Date(dateString);
+                               const year = date.getFullYear();
+                               const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                               const day = String(date.getDate()).padStart(2, '0');
+                               const hours = String(date.getHours()).padStart(2, '0');
+                               const minutes = String(date.getMinutes()).padStart(2, '0');
+                               const seconds = String(date.getSeconds()).padStart(2, '0');
+                               return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                           }
+                           
+                           let i = 1; 
+                           if (scheduled && scheduled.length > 0) { 
+                               scheduled.forEach(entry => { 
+                           %>
+                        <tr>
+                           <td><%= i++ %></td>
+                           <td><%= entry.name %></td>
+                           <td><%= entry.site_name %></td>
+                           <td class="date-cell"><%= formatDate(entry.date) %></td>
+                           <td><%= formatCreatedAt(entry.created_at) %></td>
+                           <% if (permissions.includes(11)) { %> 
+                           <td>
+                              <select class="form-select status-dropdown toggleStatus" data-entry-id="<%= entry.id %>" data-status="<%= entry.status %>">
+                                 <option value="1" <%= entry.status === 1 ? 'selected' : '' %>>Active</option>
+                                 <option value="0" <%= entry.status === 0 ? 'selected' : '' %>>Deactive</option>
+                              </select>
+                           </td>
+                           <% } %>
+                        </tr>
+                        <% }) %>
+                        <% } else { %>
+                        <tr>
+                           <td colspan="6" style="text-align: center;" class="mt-4">No scheduled entries found.</td>
+                        </tr>
+                        <% } %>
+                     </tbody>
+                  </table>
+                  <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>
+<%- include('../layout/footer') %>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+       const scheduledTable = $('#scheduledTable').DataTable({
+           responsive: true
+       });
+   
+       $('#scheduledTable').on('change', '.status-dropdown.toggleStatus', async function () {
+           const entryId = $(this).data('entry-id');
+           const currentStatus = $(this).data('status');
+           const newStatus = currentStatus === 1 ? 0 : 1; // Toggle status
+   
+           try {
+               const response = await fetch(`/updatestatus_scheduled`, {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   },
+                   body: JSON.stringify({ id: entryId, status: newStatus }) // Send new status
+               });
+   
+               if (response.ok) {
+                   await Swal.fire({
+                       icon: 'success',
+                       title: 'Success',
+                       text: `Status ${newStatus === 1 ? 'activated' : 'deactivated'} successfully`,
+                       timer: 1500,
+                       timerProgressBar: true
+                   });
+   
+                   // Update the dropdown status value and data-status attribute
+                   $(this).data('status', newStatus);
+               } else {
+                   await Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to change status.'
+                   });
+               }
+           } catch (error) {
+               console.error('Error:', error);
+               await Swal.fire({
+                   icon: 'error',
+                   title: 'Error',
+                   text: 'Failed to change status due to a network error.'
+               });
+           }
+       });
+   });
+</script>

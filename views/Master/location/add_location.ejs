@@ -1,0 +1,86 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add Location</h5>
+            <form class="row g-3" id="multiStepForm" enctype="multipart/form-data">
+
+                <div class="col-md-12">
+                    <label for="inputlocation" class="form-label">Location Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputlocation" name="name">
+                    <div class="invalid-feedback">
+                        Location name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<script>
+    $(document).ready(function () {
+        $('#submitFormButton').click(function () {
+
+            // Reset any previous error messages
+            $('#inputlocation').removeClass('is-invalid');
+            $('.invalid-feedback').hide();
+
+            // Validate Location Name
+            if ($('#inputlocation').val().trim() === '') {
+                $('#inputlocation').addClass('is-invalid');
+                $('#inputlocation').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Form Data Submission
+            let formData = new FormData();
+            formData.append('name', $('#inputlocation').val());
+
+            // AJAX request to submit form data
+            $.ajax({
+                url: '/save_location',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        // On success, show success message and redirect
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(function() {
+                            window.location.href = '/view_location';
+                        });
+                    } else {
+                        // On failure, show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // On AJAX error, show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + xhr.responseText
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+    

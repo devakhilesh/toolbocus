@@ -1,0 +1,286 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(23)) { %> 
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h3 style="text-align: center; color:#000; font-weight:800;">Let's Get You Started</h3>
+            <p style="text-align: center">Enter the details to get going</p>
+            <p style="text-align: center">General Details</p>
+
+<form class="row g-3" id="propertyForm" enctype="multipart/form-data">
+                <!-- General Details -->
+                <div class="col-md-6">
+                    <label for="inputName5" class="form-label">Schema/Site Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputName5" name="site_name" required>
+                    <div class="invalid-feedback">Site name cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputLocation" class="form-label">Location<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputLocation" name="location" required>
+                    <div class="invalid-feedback">Location cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputAddress" class="form-label">Address<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputAddress" name="address" required>
+                    <div class="invalid-feedback">Address cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputCity" class="form-label">City<span class="text-danger">*</span></label>
+                    <select id="inputCity" class="form-select" name="city" required>
+                        <option value="">Select City</option>
+                        <% tbl_cities.forEach(city => { %>
+                            <option value="<%= city.name %>"><%= city.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">Please select a city.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputState" class="form-label">State<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="state" required>
+                    <div class="invalid-feedback">State cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPostalCode" class="form-label">Postal Code<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="postal_code" required>
+                    <div class="invalid-feedback">Postal code cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputReraNumber" class="form-label">RERA Registration Number<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="rera_number" required>
+                    <div class="invalid-feedback">RERA registration number cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputDetailSideInfo" class="form-label">Detail Side Information<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="detail_side_info" required>
+                    <div class="invalid-feedback">Detail side information cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputInventory" class="form-label">Number of Inventory<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="no_of_inventory" required>
+                    <div class="invalid-feedback">Number of inventory cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPrice" class="form-label">Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="price" required>
+                    <div class="invalid-feedback">Price cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputStartingPrice" class="form-label">Starting Price<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="starting_price" required>
+                    <div class="invalid-feedback">Starting price cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPricePerSqft" class="form-label">Price Per Sq.Ft<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="price_per_sqft" required>
+                    <div class="invalid-feedback">Price per sq.ft cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputArea" class="form-label">Area<span class="text-danger">*</span></label>
+                    <select class="form-select" name="area" required>
+                        <option value="">Select Area</option>
+                        <% tbl_cities.forEach(city => { %>
+                            <option value="<%= city.name %>"><%= city.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">Please select an area.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputTotalArea" class="form-label">Total Area in (Sq.ft)<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="total_area_sqft" required>
+                    <div class="invalid-feedback">Total area cannot be empty.</div>
+                </div>
+
+                <br><br>
+
+                <!-- Site Details -->
+                <h3 style="text-align: center; color:#000; font-weight:800;">Site Details</h3>
+                <div class="col-md-6">
+                    <label for="inputBuiltUpArea" class="form-label">Built-up Area (Sq.ft)<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="built_up_area" required>
+                    <div class="invalid-feedback">Built-up area cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputCarpetArea" class="form-label">Carpet Area (Sq.ft)<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="carpet_area" required>
+                    <div class="invalid-feedback">Carpet area cannot be empty.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputBhkUnits" class="form-label">Number of BHK Units<span class="text-danger">*</span></label>
+                    <select class="form-select" name="no_of_bhk_units" required>
+                        <option value="">Select</option>
+                        <% tbl_flat_space.forEach(flat => { %>
+                            <option value="<%= flat.name %>"><%= flat.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">Please select the number of BHK units.</div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputBankLoan" class="form-label">Bank Loan Availability <span class="text-danger">*</span></label>
+                    <select class="form-select" name="bank_loan_availability" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+   
+                    </select>
+                    <div class="invalid-feedback">Bank loan availability cannot be empty.</div>
+                
+                
+                   
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputSocietyType" class="form-label">Type of Society<span class="text-danger">*</span></label>
+                    <select class="form-select" name="type_of_society" required>
+                        <option value="">Select</option>
+                        <% types_of_society.forEach(society => { %>
+                            <option value="<%= society.name %>"><%= society.name %></option>
+                        <% }); %>
+                    </select>
+                    <div class="invalid-feedback">Please select the type of society.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputRooms" class="form-label">Number of Rooms<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="number_of_rooms" required>
+                    <div class="invalid-feedback">Number of rooms cannot be empty.</div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputpossession_date" class="form-label">Possession Date<span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" name="possession_date" required>
+                    <div class="invalid-feedback">Possession Date cannot be empty.</div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputpossession_status" class="form-label">Possession Status<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="possession_status" required>
+                    <div class="invalid-feedback">Possession Status cannot be empty.</div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputno_of_flats_sold" class="form-label">No. Of Flats Sold<span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="no_of_flats_sold" required>
+                    <div class="invalid-feedback">No Of Flats Sold cannot be empty.</div>
+                </div>
+                
+                
+                <div class="col-md-6">
+                    <label for="inputNearbyFacilities" class="form-label">Nearby Facilities<span class="text-danger">*</span></label>
+                    <select class="form-select" name="nearby_facility" required>
+                        <option value="">Select</option>
+                        <option>Hospital</option>
+                        <option>Airport</option>
+                        <option>School</option>
+                        <option>Park</option>
+                        <option>Market</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a nearby facility.</div>
+                </div>
+
+                <br><br>
+
+                <!-- Amenities -->
+
+                <h3 style="text-align: center; color:#000; font-weight:800;">Amenities</h3>
+                <% tbl_amenities.forEach(amenity => { %>
+                    <div class="col-md-4 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="amenity<%= amenity.id %>" name="amenities[]" value="<%= amenity.name %>" 
+                        <label class="form-check-label" for="amenity<%= amenity.id %>"><%= amenity.name %></label>
+                    </div>
+                <% }); %>
+                <br><br>
+
+                <!-- Upload Images -->
+                <h3 style="text-align: center; color:#000; font-weight:800;">Upload Images</h3>
+               <div class="col-md-6">
+        <label for="inputImages" class="form-label">Upload Site Images<span class="text-danger">*</span></label>
+        <input type="file" class="form-control" name="upload_site_images" multiple accept="image/*">
+        <div class="invalid-feedback">Please upload images.</div>
+    </div>
+    
+    <div class="col-md-6">
+        <label for="inputImages" class="form-label">Upload Flat Images <span class="text-danger">*</span></label>
+        <input type="file" class="form-control" name="upload_flat_images" multiple accept="image/*">
+        <div class="invalid-feedback">Please upload images.</div>
+    </div>
+    
+    <div class="col-md-6">
+        <label for="inputImages" class="form-label">Upload Company Images <span class="text-danger">*</span></label>
+        <input type="file" class="form-control" name="upload_company_register_certificate" multiple accept="image/*">
+        <div class="invalid-feedback">Please upload images.</div>
+    </div>
+    
+    <div class="col-md-6">
+        <label for="inputImages" class="form-label">Upload Site Layout Plans <span class="text-danger">*</span></label>
+        <input type="file" class="form-control" name="upload_site_layout_plans" multiple accept="image/*">
+        <div class="invalid-feedback">Please upload images.</div>
+    </div>
+    
+    <div class="col-md-6">
+        <label for="inputImages" class="form-label">Upload Other Documents <span class="text-danger">*</span></label>
+        <input type="file" class="form-control" name="upload_other_document" multiple accept="image/*">
+        <div class="invalid-feedback">Please upload images.</div>
+    </div>
+                
+                <br><br>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script>
+$('#submitFormButton').click(function () {
+    // Gather form data
+    let formData = new FormData($('#propertyForm')[0]);
+
+    // Append amenities (checkboxes) values manually
+    $('input[name="amenities"]:checked').each(function () {
+        formData.append('amenities[]', $(this).val()); // Use [] to treat it as an array
+    });
+
+    // AJAX request to submit form data
+    $.ajax({
+        url: '/saveproperty',
+        type: 'POST',
+        data: formData,
+        contentType: false,  // Necessary for file uploads
+        processData: false,  // Prevent jQuery from processing the data
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message,
+                }).then(() => {
+                    window.location.href = '/view_properties';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.message,
+                });
+            }
+        },
+        error: function (xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred: ' + xhr.responseText
+            });
+        }
+    });
+});
+</script>
+

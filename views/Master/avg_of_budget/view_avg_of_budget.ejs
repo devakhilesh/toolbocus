@@ -1,0 +1,115 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+   <% if (permissions.includes(39)) { %> 
+
+    <div class="text-left m-2">
+        <a href="/add_avg_of_budget" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Average Budget</a>
+    </div>
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Average Budgets</h5>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+                        </div>
+                        <table id="AvgBudgetTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">Average Budget Name</th>
+                                     <!-- <th scope="col">Status</th>-->
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                    <% if (AvgBudgets && AvgBudgets.length > 0) { %>
+
+                                        <% AvgBudgets.forEach(avgBudget => { %>
+                                            <tr>
+                                            <td><%= i++ %></td>
+                                            <td><%= avgBudget.name %></td>
+                                            <!--  <td style="color: <%= avgBudget.status === 1 ? 'green' : 'red' %>;">
+                                                <%= avgBudget.status === 1 ? 'Active' : 'Inactive' %>
+                                            </td>-->
+                                            <td>
+                                                <a href="/edit_avg_of_budget/<%= avgBudget.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                                                <button class="btn btn-sm btn-danger deleteAvgBudget" data-id="<%= avgBudget.id %>"><i class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;" class="mt-4">No Average Budgets found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../../layout/footer') %>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const avgBudgetTable = $('#AvgBudgetTable').DataTable({
+        responsive: true
+    });
+
+    avgBudgetTable.on('init.dt', function () {
+        $('.dataTables_filter').addClass('d-none');
+        $('.dataTables_length').addClass('d-none');
+    });
+
+    $('#AvgBudgetTable').on('click', '.deleteAvgBudget', async function () {
+        const id = $(this).data('id');
+        try {
+            const response = await fetch(`/delete_avg_of_budget/${id}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            if (response.ok) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Average Budget deleted successfully',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didClose: () => {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    }
+                });
+            } else {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to delete Average Budget.'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to delete Average Budget.'
+            });
+        }
+    });
+});
+</script>

@@ -1,0 +1,179 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<main id="main" class="main">
+   <% if (permissions.includes(42)) { %> 
+   <div class="text-left m-4">
+      <a href="/add_plan" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Plan</a>
+   </div>
+   <% } %>
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-12">
+            <div class="card top-selling overflow-auto">
+               <div class="card-body pb-0">
+                  <% if (permissions.includes(41)) { %> 
+                  <h5 class="card-title">All Plans</h5>
+                  <div class="mb-3">
+                     <!-- Optional: Add delete selected button if needed -->
+                     <!-- <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button> -->
+                  </div>
+                  <table id="PlanTable" class="table table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">Sr No.</th>
+                           <th scope="col">Plan Name</th>
+                           <th scope="col">Monthly Price</th>
+                           <th scope="col">Annual Price</th>
+                           <th scope="col">Trial Days</th>
+                           <th scope="col">Description</th>
+                           <th scope="col">Status</th>
+                           <% if (permissions.includes(43) || permissions.includes(44)) { %> 
+                           <th scope="col">Actions</th>
+                           <% } %>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <% let i = 1; %>
+                        <% if (plans && plans.length > 0) { %>
+                        <% plans.forEach(plan => { %>
+                        <tr>
+                           <td><%= i++ %></td>
+                           <td><%= plan.name %></td>
+                           <td>₹ <%= plan.monthly_price %></td>
+                           <td>₹ <%= plan.annual_price %></td>
+                           <td><%= plan.trial_days %> Days</td>
+                           <td><%= plan.description %></td>
+                           <td style="color: <%= plan.status === 1 ? 'green' : 'red' %>;">
+                              <%= plan.status === 1 ? 'Active' : 'Inactive' %>
+                           </td>
+                           <% if (permissions.includes(43) || permissions.includes(44)) { %> 
+                           <td>
+                              <% if (permissions.includes(43)) { %> 
+                              <a href="/edit_plan/<%= plan.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                              <% } %>
+                              <% if (permissions.includes(44)) { %> 
+                              <button class="btn btn-sm <%= plan.status === 1 ? 'btn-danger' : 'btn-success' %> toggleStatus" data-id="<%= plan.id %>" data-status="<%= plan.status %>">
+                              <%= plan.status === 1 ? 'Deactivate' : 'Activate' %>
+                              </button>
+                              <% } %>
+                           </td>
+                           <% } %>
+                        </tr>
+                        <% }) %>
+                        <% } else { %>
+                        <tr>
+                           <td colspan="8" style="text-align: center;">No Plans found.</td>
+                        </tr>
+                        <% } %>
+                     </tbody>
+                  </table>
+                  <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+</main>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<%- include('../layout/footer') %>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+       const PlanTable = $('#PlanTable').DataTable({
+           responsive: true
+       });
+   
+       PlanTable.on('init.dt', function () {
+           $('.dataTables_filter').addClass('d-none');
+           $('.dataTables_length').addClass('d-none');
+       });
+   
+       $('#PlanTable').on('click', '.deletePlan', async function () {
+           const planId = $(this).data('id');
+           try {
+               const response = await fetch(`/delete_plan/${planId}`, {
+                   method: 'DELETE'
+               });
+               const data = await response.json();
+               if (response.ok) {
+                   await Swal.fire({
+                       icon: 'success',
+                       title: 'Success',
+                       text: 'Plan deleted successfully',
+                       timer: 1500,
+                       timerProgressBar: true,
+                       didClose: () => {
+                           setTimeout(() => {
+                               window.location.reload();
+                           }, 500);
+                       }
+                   });
+               } else {
+                   await Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to Delete Plan.'
+                   });
+               }
+           } catch (error) {
+               console.error('Error:', error);
+               await Swal.fire({
+                   icon: 'error',
+                   title: 'Error',
+                   text: 'Failed to Delete Plan.'
+               });
+           }
+       });
+   
+       $('#PlanTable').on('click', '.toggleStatus', async function () {
+           const planId = $(this).data('id');
+           const currentStatus = $(this).data('status');
+           const newStatus = currentStatus === 1 ? 0 : 1; // Toggle status
+   
+           try {
+               const response = await fetch(`/changestatus_plan/${planId}`, {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   },
+                   body: JSON.stringify({ status: newStatus })
+               });
+               const data = await response.json();
+               if (response.ok) {
+                   await Swal.fire({
+                       icon: 'success',
+                       title: 'Success',
+                       text: `Plan ${newStatus === 1 ? 'activated' : 'deactivated'} successfully`,
+                       timer: 1500,
+                       timerProgressBar: true,
+                       didClose: () => {
+                           setTimeout(() => {
+                               window.location.reload();
+                           }, 500);
+                       }
+                   });
+               } else {
+                   await Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to change plan status.'
+                   });
+               }
+           } catch (error) {
+               console.error('Error:', error);
+               await Swal.fire({
+                   icon: 'error',
+                   title: 'Error',
+                   text: 'Failed to change plan status.'
+               });
+           }
+       });
+   });
+</script>

@@ -1,0 +1,88 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Estimated Size</h5>
+            <form class="row g-3 needs-validation" id="editestimatedsizesForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputestimated_sizes" class="form-label">Estimated Size<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputestimated_sizes" name="name" value="<%= estimated_sizes.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a Estimated Size.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editestimatedsizesForm = document.getElementById('editestimatedsizesForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation feedback
+            editestimatedsizesForm.classList.remove('was-validated');
+            editestimatedsizesForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editestimatedsizesForm.checkValidity()) {
+                editestimatedsizesForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editestimatedsizesForm);
+                const response = await fetch('/update_estimatedsizes/<%= estimated_sizes.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Estimated Sizes updated successfully!',
+                        timer: 2000, 
+                        timerProgressBar: true,
+                        didClose: () => {
+                            window.location.href = '/view_estimated_sizes'; 
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update Estimated Sizes'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update Estimated Sizes'
+                });
+            }
+        });
+    });
+</script>

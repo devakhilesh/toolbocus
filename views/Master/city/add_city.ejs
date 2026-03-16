@@ -1,0 +1,102 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Add City</h5>
+            <form class="row g-3" id="multiStepForm" enctype="multipart/form-data">
+
+                <div class="col-md-12">
+                    <label for="inputCityName" class="form-label">City Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputCityName" name="name">
+                    <div class="invalid-feedback">
+                        City name cannot be empty.
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin: 30px 0;">
+                    <label class="form-label" for="inputCityImage">Upload City Image<span class="text-danger">*</span></label>
+                    <input type="file" class="form-control" id="inputCityImage" name="image">
+                    <div class="invalid-feedback">
+                        Please select an image file.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+<script>
+    $(document).ready(function () {
+        $('#submitFormButton').click(function () {
+            // Reset any previous error messages
+            $('.invalid-feedback').hide();
+            $('#inputCityName').removeClass('is-invalid');
+            $('#inputCityImage').removeClass('is-invalid');
+
+            // Validate City Name
+            if ($('#inputCityName').val().trim() === '') {
+                $('#inputCityName').addClass('is-invalid');
+                $('#inputCityName').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Validate City Image
+            let cityImage = $('#inputCityImage')[0].files[0];
+            if (!cityImage) {
+                $('#inputCityImage').addClass('is-invalid');
+                $('#inputCityImage').next('.invalid-feedback').show();
+                return; // Exit function if validation fails
+            }
+
+            // Form Data Submission
+            let formData = new FormData();
+            formData.append('name', $('#inputCityName').val());
+            formData.append('image', cityImage);
+
+            // AJAX request to submit form data
+            $.ajax({
+                url: '/save_city',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        // On success, show success message and redirect
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        }).then(function() {
+                            // Redirect to view_city page
+                            window.location.href = '/view_city';
+                        });
+                    } else {
+                        // On failure, show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // On AJAX error, show error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: ' + xhr.responseText
+                    });
+                }
+            });
+        });
+    });
+</script>

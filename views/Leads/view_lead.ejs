@@ -1,0 +1,187 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<main id="main" class="main">
+   <div class="text-left m-2">
+      <% if (permissions.includes(13)) { %> 
+      <a href="/add_lead" class="btn btn-primary login-btn"><i class="bi bi-plus-lg"></i> Add Lead</a>
+      <% } %>
+      <% if (permissions.includes(16)) { %> 
+      <button class="btn btn-primary login-btn" id="importLeadsBtn"><i class="bi bi-upload"></i> Import Leads</button>
+      <a href="https://builder.propal.in/sample_leads.csv" class="btn btn-secondary login-btn"><i class="bi bi-download"></i> Download Sample File</a>
+      <% } %>
+      <input type="file" id="fileInput" style="display: none;" />
+   </div>
+   <section class="section dashboard">
+      <div class="row">
+         <div class="col-12">
+            <div class="card top-selling overflow-auto">
+               <div class="card-body pb-0">
+                  <% if (permissions.includes(12)) { %> 
+                  <h5 class="card-title">All Leads</h5>
+                  <div class="mb-3">
+                     <!-- Optional: Add delete selected button if needed -->
+                     <!-- <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button> -->
+                  </div>
+                  <table id="tableId" class="table table-hover">
+                     <thead>
+                        <tr>
+                           <th scope="col">Sr No.</th>
+                            <% if (role == 'Admin') { %> 
+                           <th scope="col">Builder Name</th>
+                            <% } %>
+                           <th scope="col">Name</th>
+                           <th scope="col">Email</th>
+                           <th scope="col">Phone</th>
+                           <th scope="col">Password</th>
+                           <th scope="col">Status</th>
+                           <% if (permissions.includes(14) || permissions.includes(15)) { %> 
+                           <th scope="col">Actions</th>
+                           <% } %>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <% let i = 1; %>
+                        <% if (builders && builders.length > 0) { %>
+                        <% builders.forEach(builder => { %>
+                        <tr>
+                           <td><%= i++ %></td> 
+                            <% if (role == 'Admin') { %> 
+                           <td><%= builder.builder_name %></td>
+                            <% } %>
+                           <td><%= builder.name %></td>
+                           <td><%= builder.email %></td>
+                           <td><%= builder.mobile_no %></td>
+                           <td><%= builder.plain_password %></td>
+                           <td style="color: <%= builder.status == '1' ? 'green' : 'red' %>;">
+                              <%= builder.status == '1' ? 'Active' : 'Inactive' %>
+                           </td>
+                           <% if (permissions.includes(14) || permissions.includes(15)) { %> 
+                           <td>
+                              <% if (permissions.includes(14)) { %> 
+                              <a href="/editLeadPage/<%= builder.id %>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i></a>
+                              <% } %>
+                              <% if (permissions.includes(15)) { %> 
+                              <button class="btn btn-sm btn-danger deleteBuilder" data-id="<%= builder.id %>"><i class="bi bi-trash"></i></button>
+                              <% } %>
+                           </td>
+                           <% } %>
+                        </tr>
+                        <% }) %>
+                        <% } else { %>
+                        <tr>
+                           <td colspan="7" style="text-align: center;">No Builder found.</td>
+                        </tr>
+                        <% } %>
+                     </tbody>
+                  </table>
+                  <% } else { %>
+                  <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+                  <% } %>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>
+<%- include('../layout/footer') %>
+<script>
+   initializeDataTable('#tableId');
+   
+   document.addEventListener('DOMContentLoaded', () => {
+    $('#tableId').on('click', '.deleteBuilder', async function () {
+        const builderId = $(this).data('id');
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`/delete_lead/${builderId}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'The lead is deleted.',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didClose: () => {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    await Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to delete lead.'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to delete lead.'
+                });
+            }
+        }
+    });
+
+
+       // Handle Import Leads button click
+       document.getElementById('importLeadsBtn').addEventListener('click', () => {
+           document.getElementById('fileInput').click();
+       });
+   
+       // Handle file input change
+       document.getElementById('fileInput').addEventListener('change', async (event) => {
+           const file = event.target.files[0];
+           if (file) {
+               const formData = new FormData();
+               formData.append('file', file);
+   
+               try {
+                   const response = await fetch('/import_leads', {
+                       method: 'POST',
+                       body: formData
+                   });
+                   const result = await response.json();
+                   if (response.ok) {
+                       await Swal.fire({
+                           icon: 'success',
+                           title: 'Success',
+                           text: 'Leads imported successfully',
+                           timer: 1500,
+                           timerProgressBar: true,
+                           didClose: () => {
+                               setTimeout(() => {
+                                   window.location.reload();
+                               }, 500);
+                           }
+                       });
+                   } else {
+                       await Swal.fire({
+                           icon: 'error',
+                           title: 'Error',
+                           text: 'Failed to Import Leads.'
+                       });
+                   }
+               } catch (error) {
+                   console.error('Error:', error);
+                   await Swal.fire({
+                       icon: 'error',
+                       title: 'Error',
+                       text: 'Failed to Import Leads.'
+                   });
+               }
+           }
+       });
+   });
+</script>

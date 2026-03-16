@@ -1,0 +1,390 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<style>
+  :root {
+    --brand: #4154f1;
+    --brand-light: #eef0ff;
+    --danger: #ff4f5b;
+    --warning: #ffbc57;
+    --text-muted: #6c757d;
+    --card-shadow: 0 4px 24px rgba(65,84,241,0.07);
+  }
+
+  .stat-card {
+    border-radius: 14px; border: none;
+    box-shadow: var(--card-shadow);
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 16px;
+    background: #fff;
+  }
+  .stat-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .stat-icon.blue   { background: var(--brand-light); color: var(--brand); }
+  .stat-icon.green  { background: #e8faf0; color: #2eca6a; }
+  .stat-icon.orange { background: #fff5e6; color: var(--warning); }
+  .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 2px; }
+  .stat-value { font-size: 26px; font-weight: 700; color: #2d3748; line-height: 1; }
+
+  .main-card { border-radius: 16px; border: none; box-shadow: var(--card-shadow); overflow: hidden; }
+  .main-card .card-header {
+    background: #fff; border-bottom: 1px solid #f0f2ff;
+    padding: 18px 24px; display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .main-card .card-header h5 { margin: 0; font-weight: 700; font-size: 16px; color: #2d3748; }
+
+  #giveawaysTable thead tr th {
+    background: #f8f9ff; color: #4154f1; font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+    border-bottom: 2px solid #eef0ff; padding: 14px 16px; white-space: nowrap;
+  }
+  #giveawaysTable tbody tr { transition: background 0.15s; }
+  #giveawaysTable tbody tr:hover { background: #f8f9ff; }
+  #giveawaysTable tbody td {
+    padding: 12px 16px; vertical-align: middle;
+    font-size: 13.5px; border-bottom: 1px solid #f5f6ff; color: #3d4a5c;
+  }
+
+  .type-give { background: #e8f5ff; color: #0d7dd4; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+  .type-take { background: #fff5e6; color: #c77b00; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+
+  .post-img { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 2px solid #eef0ff; }
+  .no-img { width: 44px; height: 44px; background: #f0f2ff; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #a0aec0; font-size: 18px; }
+
+  .btn-view-sm { background: #eef0ff; color: var(--brand); border: none; border-radius: 7px; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; font-size: 14px; }
+  .btn-view-sm:hover { background: var(--brand); color: #fff; }
+  .btn-toggle-sm { background: #fff8e6; color: #c77b00; border: none; border-radius: 7px; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; font-size: 14px; }
+  .btn-toggle-sm:hover { background: #c77b00; color: #fff; }
+  .btn-delete-sm { background: #fff0f0; color: var(--danger); border: none; border-radius: 7px; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; font-size: 14px; }
+  .btn-delete-sm:hover { background: var(--danger); color: #fff; }
+
+  /* Modal */
+  .modal-content { border: none; border-radius: 20px; box-shadow: 0 20px 60px rgba(65,84,241,0.15); overflow: hidden; }
+  .modal-header { background: linear-gradient(135deg, #4154f1, #6872f5); border: none; padding: 22px 28px; }
+  .modal-header .modal-title { color: #fff; font-weight: 700; font-size: 18px; }
+  .modal-header .btn-close { filter: invert(1) brightness(2); }
+  .modal-body { padding: 28px; }
+
+  .info-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f5f6ff; }
+  .info-row:last-child { border-bottom: none; }
+  .info-key { font-size: 11px; font-weight: 700; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px; width: 160px; flex-shrink: 0; }
+  .info-val { font-size: 13.5px; color: #2d3748; font-weight: 500; }
+
+  .empty-state { padding: 48px 0; text-align: center; color: var(--text-muted); }
+  .empty-state i { font-size: 40px; color: #c7cffe; margin-bottom: 12px; display: block; }
+
+  .img-preview-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .img-preview { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; border: 2px solid #eef0ff; }
+</style>
+
+<main id="main" class="main">
+  <div class="pagetitle d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h1 style="font-size:22px; font-weight:800; color:#2d3748; margin:0;">Giveaway Management</h1>
+      <nav><ol class="breadcrumb" style="font-size:12px; margin:4px 0 0;">
+        <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+        <li class="breadcrumb-item active">Giveaways</li>
+      </ol></nav>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="row g-3 mb-4">
+    <div class="col-sm-4">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="bi bi-gift"></i></div>
+        <div>
+          <div class="stat-label">Total Posts</div>
+          <div class="stat-value"><%= giveaways.length %></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="bi bi-box-arrow-up"></i></div>
+        <div>
+          <div class="stat-label">Give Posts</div>
+          <div class="stat-value"><%= giveaways.filter(g => g.post_type === 'give').length %></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="stat-card">
+        <div class="stat-icon orange"><i class="bi bi-box-arrow-in-down"></i></div>
+        <div>
+          <div class="stat-label">Take Posts</div>
+          <div class="stat-value"><%= giveaways.filter(g => g.post_type === 'take').length %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card main-card">
+    <div class="card-header">
+      <h5><i class="bi bi-gift me-2" style="color:#4154f1;"></i>All Posts</h5>
+      <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Quick search..."
+        style="width:200px; border-radius:8px; border:1.5px solid #e2e6ff; font-size:13px;">
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table id="giveawaysTable" class="table mb-0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Image</th>
+              <th>Item</th>
+              <th>Type</th>
+              <th>Posted By</th>
+              <th>Category</th>
+              <th>Condition</th>
+              <th>Subscription</th>
+             <th>Status</th>
+              <th>Posted On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (giveaways && giveaways.length > 0) { %>
+              <% giveaways.forEach((g, index) => { %>
+              <tr>
+                <td style="color:#a0aec0; font-weight:600; font-size:12px;"><%= index + 1 %></td>
+                <td>
+                  <% if (g.item_images && g.item_images.length > 0) { %>
+                    <img src="<%= g.item_images[0] %>" class="post-img" alt="item">
+                  <% } else { %>
+                    <div class="no-img"><i class="bi bi-image"></i></div>
+                  <% } %>
+                </td>
+                <td>
+                  <div style="font-weight:700; font-size:13.5px; color:#2d3748;"><%= g.item_name %></div>
+                  <div style="font-size:11px; color:#a0aec0;">ID #<%= g.id %></div>
+                </td>
+                <td>
+                  <% if (g.post_type === 'give') { %>
+                    <span class="type-give"><i class="bi bi-arrow-up-circle me-1"></i>Give</span>
+                  <% } else { %>
+                    <span class="type-take"><i class="bi bi-arrow-down-circle me-1"></i>Take</span>
+                  <% } %>
+                </td>
+                <td>
+                  <div style="font-weight:600; font-size:13px;"><%= g.user_name || '—' %></div>
+                  <div style="font-size:11px; color:#a0aec0;"><%= g.phone_number || '' %></div>
+                </td>
+                <td style="font-size:13px;"><%= g.item_category || '—' %></td>
+                <td style="font-size:13px; text-transform:capitalize;"><%= g.item_condition || '—' %></td>
+                <td>
+
+<% if (g.subscription_status === 'Active') { %>
+<span class="badge bg-success">Active</span>
+
+<% } else if (g.subscription_status === 'Expired') { %>
+<span class="badge bg-warning">Expired</span>
+
+<% } else if (g.subscription_status === 'Insufficient Balance') { %>
+<span class="badge bg-danger">Insufficient Balance</span>
+
+<% } else { %>
+<span class="badge bg-secondary">Inactive</span>
+<% } %>
+
+</td>
+                <td>
+                  <% if (g.status === 'Active') { %>
+                    <span class="badge bg-success">Active</span>
+                  <% } else { %>
+                    <span class="badge bg-secondary"><%= g.status %></span>
+                  <% } %>
+                </td>
+                <td style="font-size:12px; color:#a0aec0; white-space:nowrap;">
+                  <%= g.created_at ? new Date(g.created_at).toLocaleDateString('en-IN') : '—' %>
+                </td>
+                <td>
+                  <div class="d-flex gap-1">
+                    <button class="btn-view-sm viewGiveaway" title="View Details"
+                      data-id="<%= g.id %>"
+                      data-name="<%= g.item_name %>"
+                      data-type="<%= g.post_type %>"
+                      data-user="<%= g.user_name || '' %>"
+                      data-phone="<%= g.phone_number || '' %>"
+                      data-category="<%= g.item_category || '' %>"
+                      data-condition="<%= g.item_condition || '' %>"
+                      data-note="<%= g.item_note || '' %>"
+                      data-return_type="<%= g.return_type || '' %>"
+                      data-return_item="<%= g.return_item_name || '' %>"
+                      data-status="<%= g.status %>"
+                      data-area="<%= g.pickup_area || '' %>"
+                      data-images="<%= JSON.stringify(g.item_images) %>"
+                      data-joined="<%= g.created_at ? new Date(g.created_at).toLocaleDateString('en-IN') : '' %>">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn-toggle-sm toggleStatus" title="Toggle Status"
+                      data-id="<%= g.id %>"
+                      data-status="<%= g.status %>">
+                      <% if (g.status === 'Active') { %>
+                        <i class="bi bi-pause-circle"></i>
+                      <% } else { %>
+                        <i class="bi bi-play-circle"></i>
+                      <% } %>
+                    </button>
+                    <button class="btn-delete-sm deleteGiveaway" title="Delete" data-id="<%= g.id %>">
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <% }) %>
+            <% } else { %>
+            <tr>
+              <td colspan="10">
+                <div class="empty-state">
+                  <i class="bi bi-gift"></i>
+                  <div style="font-weight:600; margin-bottom:4px;">No posts yet</div>
+                  <div style="font-size:13px;">Posts created from the mobile app will appear here.</div>
+                </div>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- VIEW MODAL -->
+<div class="modal fade" id="viewGiveawayModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-gift me-2"></i>Post Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="view_images" class="img-preview-wrap mb-3"></div>
+        <div id="viewGiveawayRows"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layout/footer') %>
+
+<script>
+$(document).ready(function () {
+
+  $('#giveawaysTable').DataTable({
+    pageLength: 10,
+    order: [[0, 'asc']],
+    columnDefs: [{ orderable: false, targets: 11 }],
+    language: { search: '', searchPlaceholder: 'Search...' }
+  });
+
+  $('#searchInput').on('keyup', function () {
+    $('#giveawaysTable').DataTable().search($(this).val()).draw();
+  });
+
+  // ── View ──
+  $('.viewGiveaway').on('click', function () {
+    const d = $(this).data();
+
+    // Images
+    let images = [];
+    try { images = JSON.parse(d.images || '[]'); } catch {}
+    let imgHtml = images.length
+      ? images.map(src => `<img src="${src}" class="img-preview">`).join('')
+      : '<span style="font-size:13px; color:#a0aec0;">No images</span>';
+    $('#view_images').html(imgHtml);
+
+    const fields = [
+      ['Post ID',       '#' + d.id],
+      ['Item Name',     d.name],
+      ['Post Type',     d.type === 'give' ? '⬆️ Give' : '⬇️ Take'],
+      ['Posted By',     d.user || '—'],
+      ['Phone',         d.phone || '—'],
+      ['Category',      d.category || '—'],
+      ['Condition',     d.condition || '—'],
+      ['Note',          d.note || '—'],
+      ['Return Type',   d.return_type || '—'],
+      ['Return Item',   d.return_item || '—'],
+      ['Pickup Area',   d.area || '—'],
+      ['Status',        d.status],
+      ['Posted On',     d.joined || '—'],
+    ];
+
+    let html = '';
+    fields.forEach(([k, v]) => {
+      html += `<div class="info-row"><div class="info-key">${k}</div><div class="info-val">${v}</div></div>`;
+    });
+    $('#viewGiveawayRows').html(html);
+    new bootstrap.Modal(document.getElementById('viewGiveawayModal')).show();
+  });
+
+  // ── Toggle Status ──
+  $(document).on('click', '.toggleStatus', async function () {
+    const id = $(this).data('id');
+    const currentStatus = $(this).data('status');
+    const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+
+    const result = await Swal.fire({
+      title: `Mark as ${newStatus}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: newStatus === 'Active' ? '#2eca6a' : '#ffbc57',
+      confirmButtonText: `Yes, mark ${newStatus}!`
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`/admin/update_giveaway_status/${id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        const data = await response.json();
+        if (data.status) {
+          Swal.fire({ title: 'Updated!', icon: 'success', timer: 1500, showConfirmButton: false });
+          setTimeout(() => location.reload(), 1600);
+        } else {
+          Swal.fire('Error', data.message, 'error');
+        }
+      } catch {
+        Swal.fire('Error', 'Server error.', 'error');
+      }
+    }
+  });
+
+  // ── Delete ──
+  $(document).on('click', '.deleteGiveaway', async function () {
+    const id = $(this).data('id');
+    const result = await Swal.fire({
+      title: 'Delete this post?',
+      text: 'This will mark the post as deleted.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ff4f5b',
+      confirmButtonText: 'Yes, delete!'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`/admin/delete_giveaway/${id}`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.status) {
+          Swal.fire({ title: 'Deleted!', icon: 'success', timer: 1500, showConfirmButton: false });
+          setTimeout(() => location.reload(), 1600);
+        } else {
+          Swal.fire('Error', data.message, 'error');
+        }
+      } catch {
+        Swal.fire('Error', 'Server error.', 'error');
+      }
+    }
+  });
+
+});
+</script>

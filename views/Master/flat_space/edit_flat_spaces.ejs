@@ -1,0 +1,91 @@
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Edit Flat Space</h5>
+            <form class="row g-3 needs-validation" id="editflatspaceForm" enctype="multipart/form-data" novalidate>
+
+                <div class="col-md-12">
+                    <label for="inputflatspace" class="form-label">Flat Space<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputflatspace" name="name" value="<%= flat_space.name %>" required>
+                    <div class="invalid-feedback">
+                        Please enter a flat space name.
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../../layout/footer') %>
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitFormButton = document.getElementById('submitFormButton');
+        const editflatspaceForm = document.getElementById('editflatspaceForm');
+
+        submitFormButton.addEventListener('click', async () => {
+            // Reset any previous validation feedback
+            editflatspaceForm.classList.remove('was-validated');
+            editflatspaceForm.querySelectorAll('.is-invalid').forEach(el => {
+                el.classList.remove('is-invalid');
+            });
+
+            // Validate form before submission
+            if (!editflatspaceForm.checkValidity()) {
+                editflatspaceForm.classList.add('was-validated');
+                return;
+            }
+
+            try {
+                const formData = new FormData(editflatspaceForm);
+                const response = await fetch('/update_flatspace/<%= flat_space.id %>', {
+                    method: 'POST',
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    // Success message using SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Flat Space updated successfully!',
+                        timer: 2000, // Optional, automatically close after 2 seconds
+                        timerProgressBar: true, // Optional, show progress bar
+                        didClose: () => {
+                            window.location.href = '/view_flat_space'; // Redirect to another page
+                        }
+                    });
+                } else {
+                    // Error message using SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update Flat Space'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Generic error message using SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update Flat Space'
+                });
+            }
+        });
+    });
+</script>

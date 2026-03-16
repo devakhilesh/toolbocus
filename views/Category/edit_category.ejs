@@ -1,0 +1,88 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Edit Category</h1>
+    </div>
+
+    <div class="card" style="padding:20px 0;">
+        <div class="card-body">
+            <h5 class="card-title">Category Details</h5>
+            <form class="row g-3" id="editCategoryForm">
+
+                <input type="hidden" id="categoryId" value="<%= category.id %>">
+
+                <div class="col-md-12">
+                    <label class="form-label">Category Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="name" value="<%= category.name %>" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Status<span class="text-danger">*</span></label>
+                    <select class="form-select" name="status" required>
+                        <option value="active" <%= category.status == 'active' ? 'selected' : '' %>>Active</option>
+                        <option value="inactive" <%= category.status == 'inactive' ? 'selected' : '' %>>Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Current Image</label>
+                    <br>
+                    <% if(category.image_url) { %>
+                        <img src="<%= category.image_url %>" style="width: 60px; height: 60px; border-radius: 5px; margin-bottom: 10px;">
+                    <% } %>
+                    <input type="file" class="form-control" name="category_image" accept="image/*">
+                    <small class="text-muted">Leave empty to keep current image</small>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary" id="updateBtn">Update Category</button>
+                    <a href="/admin/view_categories" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include('../layout/footer') %>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+$(document).ready(function () {
+    $('#editCategoryForm').on('submit', function (e) {
+        e.preventDefault();
+        
+        let id = $('#categoryId').val();
+        let formData = new FormData(this);
+
+        $('#updateBtn').prop('disabled', true).text('Updating...');
+
+        $.ajax({
+            url: '/admin/update_category/' + id,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if(response.status) {
+                    Swal.fire('Success!', response.message, 'success').then(() => {
+                        window.location.href = '/admin/view_categories';
+                    });
+                } else {
+                    Swal.fire('Error!', response.message, 'error');
+                    $('#updateBtn').prop('disabled', false).text('Update Category');
+                }
+            },
+            error: function () {
+                Swal.fire('Error!', 'Server connection failed', 'error');
+                $('#updateBtn').prop('disabled', false).text('Update Category');
+            }
+        });
+    });
+});
+</script>
+<%- include('../layout/footer') %>

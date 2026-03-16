@@ -1,0 +1,122 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+<style>
+    .date-cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100px;  
+    }
+</style>
+
+<main id="main" class="main">
+       <% if (permissions.includes(20)) { %> 
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card top-selling overflow-auto">
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Today</a></li>
+                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                            <li><a class="dropdown-item" href="#">This Year</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">All Wishlist</h5>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-danger mb-2 d-none" id="deleteSelectedBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+                        </div>
+                        <table id="wishlistTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sr No.</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Builder Name</th>
+                                    <th scope="col">Property Name</th>
+                                    <th scope="col" class="date-cell">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let i = 1; %>
+                                <% if (wishlists && wishlists.length > 0) { %>
+                                <% 
+function formatDateTime(dateString) {
+    const options = { 
+        year: '2-digit', 
+        month: '2-digit', 
+        day: '2-digit',
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false // Use 24-hour format
+    };
+    return new Date(dateString).toLocaleString(undefined, options);
+}
+
+function formatDate(dateString) {
+const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+%>
+     
+                                    <% wishlists.forEach(wishlist => { %>
+                                        <tr>
+                                            <td><%= i++ %></td>
+                                            <td><%= wishlist.name %></td>
+                                            <td><%= wishlist.builder_name %></td>
+                                            <td><%= wishlist.site_name %></td>
+                                            <td class="date-cell"><%= formatDateTime(wishlist.created_at) %></td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;" class="mt-4">No wishlists found.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<% } else { %>
+    <img src="https://builder.propal.in/Images/access_denied.png" alt="No Permission" style="max-width: 100%; height: auto;" />
+ <% } %>
+</main>
+
+<%- include('../layout/footer') %>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize DataTable
+    const wishlistTable = $('#wishlistTable').DataTable({
+        responsive: true
+    });
+
+    // Hide DataTable search box and page length selector
+    wishlistTable.on('init.dt', function () {
+        $('.dataTables_filter').addClass('d-none');
+        $('.dataTables_length').addClass('d-none');
+    });
+
+    // Event listener for checkboxes
+    $('#wishlistTable').on('change', '.enquiry-checkbox', function () {
+        const checkedCount = $('#wishlistTable').find('.enquiry-checkbox:checked').length;
+        if (checkedCount > 0) {
+            $('#deleteSelectedBtn').removeClass('d-none');
+        } else {
+            $('#deleteSelectedBtn').addClass('d-none');
+        }
+    });
+});
+</script>

@@ -1,0 +1,357 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+
+<div class="pagetitle">
+<h3>Subscription Management</h3>
+</div>
+
+<section class="section dashboard">
+<div class="row">
+
+<div class="col-12">
+
+<div class="card">
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+
+<h5 class="card-title">All Subscriptions</h5>
+
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubscriptionModal">
+<i class="bi bi-plus-lg"></i> Add Subscription
+</button>
+
+</div>
+<% if(success){ %>
+<div id="successAlert" class="alert alert-success alert-dismissible fade show">
+<%= success %>
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<% } %>
+<table id="tableId" class="table table-hover text-center">
+
+<thead class="table-dark">
+<tr>
+<th>SR No</th>
+<th>Name</th>
+<th>Price</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+
+<% if(subscriptions && subscriptions.length>0){ %>
+
+<% let i = (currentPage - 1) * 10 + 1; %>
+<% subscriptions.forEach(function(sub){ %>
+
+<tr>
+
+<td><%= i++ %></td>
+<td><%= sub.name %></td>
+<td>₹ <%= sub.price %></td>
+<td><%= new Date(sub.start_date).toLocaleDateString() %></td>
+<td><%= new Date(sub.end_date).toLocaleDateString() %></td>
+<td>
+
+<%
+const todayDate = new Date();
+const endDateCheck = new Date(sub.end_date);
+
+let statusText = "Active";
+
+if(sub.status && sub.status.toLowerCase() === "inactive"){
+    statusText = "Inactive";
+}else if(endDateCheck < todayDate){
+    statusText = "Inactive";
+}
+%>
+
+<span class="badge <%= statusText === 'Active' ? 'bg-success' : 'bg-danger' %>">
+<%= statusText %>
+</span>
+
+</td>
+<td>
+
+<button class="btn btn-sm btn-warning"
+data-bs-toggle="modal"
+data-bs-target="#editSubscriptionModal<%= sub.id %>">
+<i class="bi bi-pencil"></i>
+</button>
+
+<button onclick="deleteSubscription(<%= sub.id %>, '<%= sub.name %>')" class="btn btn-sm btn-danger">
+<i class="bi bi-trash"></i>
+</button>
+
+</td>
+
+</tr>
+
+<!-- ✅ EDIT MODAL -->
+<div class="modal fade" id="editSubscriptionModal<%= sub.id %>" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5 class="modal-title">Edit Subscription</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<form action="/admin/update_subscription/<%= sub.id %>" method="POST">
+
+<div class="modal-body">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Plan Name</label>
+<input type="text" name="name" value="<%= sub.name %>" class="form-control" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label>Price</label>
+<input type="number" name="price" value="<%= sub.price %>" class="form-control" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label>Start Date</label>
+<input type="date" name="start_date" value="<%= sub.start_date %>" class="form-control" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label>End Date</label>
+<input type="date" name="end_date" value="<%= sub.end_date %>" class="form-control" required>
+</div>
+
+<div class="col-md-12 mb-3">
+<label>Description</label>
+<textarea name="description" class="form-control"><%= sub.description %></textarea>
+</div>
+<%
+const today = new Date();
+const endDate = new Date(sub.end_date);
+const expired = endDate < today;
+%>
+
+<div class="col-md-6 mb-3">
+<label>Status</label>
+
+<select name="status" class="form-select" <%= expired ? 'disabled' : '' %>>
+
+<option value="Active"
+<%= sub.status && sub.status.trim().toLowerCase() === 'active' && !expired ? 'selected' : '' %>>
+Active
+</option>
+
+<option value="Inactive"
+<%= (sub.status && sub.status.trim().toLowerCase() === 'inactive') || expired ? 'selected' : '' %>>
+Inactive
+</option>
+
+</select>
+
+</div>
+</div>
+
+</div>
+
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+<button type="submit" class="btn btn-success">Update</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
+<% }) %>
+
+<% }else{ %>
+
+<tr>
+<td colspan="6">No subscriptions found</td>
+</tr>
+
+<% } %>
+
+</tbody>
+</table>
+<nav>
+<ul class="pagination justify-content-end">
+
+<% if(currentPage > 1){ %>
+<li class="page-item">
+<a class="page-link" href="/admin/subscription?page=<%= currentPage-1 %>">Previous</a>
+</li>
+<% } %>
+
+<% for(let i=1;i<=totalPages;i++){ %>
+
+<li class="page-item <%= currentPage === i ? 'active' : '' %>">
+<a class="page-link" href="/admin/subscription?page=<%= i %>">
+<%= i %>
+</a>
+</li>
+
+<% } %>
+
+<% if(currentPage < totalPages){ %>
+<li class="page-item">
+<a class="page-link" href="/admin/subscription?page=<%= currentPage+1 %>">Next</a>
+</li>
+<% } %>
+
+</ul>
+</nav>
+</div>
+</div>
+
+</div>
+
+</div>
+</section>
+
+</main>
+
+
+<!-- ✅ ADD SUBSCRIPTION MODAL (IMPORTANT: OUTSIDE CARD) -->
+
+<div class="modal fade" id="addSubscriptionModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5 class="modal-title">Add Subscription</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<form action="/admin/add_subscription" method="POST">
+
+<div class="modal-body">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Plan Name</label>
+<input type="text" name="name" class="form-control" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label class="form-label">Price</label>
+<input type="number" name="price" class="form-control" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label class="form-label">Start Date</label>
+<input type="date" name="start_date" class="form-control" required>
+</div>
+
+<div class="col-md-3 mb-3">
+<label class="form-label">End Date</label>
+<input type="date" name="end_date" class="form-control" required>
+</div>
+
+<div class="col-md-12 mb-3">
+<label class="form-label">Description</label>
+<textarea name="description" class="form-control"></textarea>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Status</label>
+<select name="status" class="form-select">
+<option value="Active">Active</option>
+<option value="Inactive">Inactive</option>
+</select>
+</div>
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+Cancel
+</button>
+
+<button type="submit" class="btn btn-success">
+Save Subscription
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
+
+<script>
+    function deleteSubscription(id, name){
+
+Swal.fire({
+title: 'Are you sure?',
+text: "Delete subscription '" +name+ "' ?",
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#d33',
+cancelButtonColor: '#3085d6',
+confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+
+if (result.isConfirmed) {
+
+fetch("/admin/delete_subscription/" + id, {
+method: "DELETE"
+})
+.then(res => res.json())
+.then(data => {
+
+if(data.status){
+
+Swal.fire(
+'Deleted!',
+name + " subscription deleted successfully.",
+'success'
+).then(()=>{
+location.reload();
+})
+
+}else{
+
+Swal.fire(
+'Error!',
+data.message,
+'error'
+)
+
+}
+
+})
+
+}
+
+})
+
+}
+
+
+</script>
+<script>
+setTimeout(function () {
+    const alert = document.getElementById("successAlert");
+    if (alert) {
+        alert.remove(); // completely removes element
+    }
+}, 1000);
+</script>
+<%- include('../layout/footer') %>

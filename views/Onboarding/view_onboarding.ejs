@@ -1,0 +1,359 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Onboarding Management</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                <li class="breadcrumb-item active">Onboarding Screens</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section">
+
+        <!-- ── Add / Edit Form ── -->
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center gap-2" id="formTitle">
+                            <i class="bi bi-plus-circle text-primary"></i> Add Onboarding Screen
+                        </h5>
+
+                        <form id="onboardingForm" class="row g-3">
+                            <input type="hidden" id="onboardingId" name="id" value="">
+
+                            <!-- Sort Order + Status row -->
+                            <div class="col-md-6">
+                                <label class="form-label">Screen Order <span class="text-danger">*</span></label>
+                                <input type="number" name="screen_order" id="screenOrder"
+                                    class="form-control" min="1" value="1" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Status</label>
+                                <select name="status" id="screenStatus" class="form-select">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+
+                            <!-- Title -->
+                            <div class="col-12">
+                                <label class="form-label">Title <span class="text-danger">*</span></label>
+                                <input type="text" name="title" id="screenTitle"
+                                    class="form-control" placeholder="e.g. Sell What You Don't Need" required>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12">
+                                <label class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea name="description" id="screenDescription"
+                                    class="form-control" rows="3"
+                                    placeholder="e.g. Turn your unused items into instant cash with just a few taps." required></textarea>
+                            </div>
+
+                            <!-- Image -->
+                            <div class="col-12">
+                                <label class="form-label">Screen Image <span class="text-danger">*</span></label>
+                                <input type="file" name="onboarding_image" id="onboardingImage"
+                                    class="form-control" accept="image/*">
+                                <div class="mt-2 d-none" id="imgPreviewWrap">
+                                    <img id="imgPreview" src="" alt="Preview"
+                                        style="max-height:120px;border-radius:10px;border:1px solid #dee2e6;object-fit:contain;">
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="col-12 text-center mt-2">
+                                <button type="submit" class="btn btn-primary px-4" id="saveBtn">
+                                    <i class="bi bi-save me-1"></i> Save Screen
+                                </button>
+                                <button type="button" class="btn btn-secondary px-4" id="resetBtn">
+                                    <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm h-100" style="border-left:4px solid #0d6efd;">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary"><i class="bi bi-lightbulb me-1"></i> Preview & Tips</h6>
+                        <div id="livePreview" class="d-flex flex-column align-items-center justify-content-center p-3"
+                            style="background:#f8f9ff;border-radius:12px;min-height:200px;">
+                            <div id="previewPhone"
+                                style="width:140px;background:#fff;border-radius:22px;border:2px solid #c9d4ff;
+                                       padding:16px 12px;box-shadow:0 4px 18px rgba(0,0,0,.08);text-align:center;">
+                                <div id="prevImgHolder" style="height:80px;display:flex;align-items:center;justify-content:center;">
+                                    <i class="bi bi-image" style="font-size:2.5rem;color:#c9d4ff;"></i>
+                                </div>
+                                <div style="font-size:11px;font-weight:700;color:#222;margin-top:8px;line-height:1.3;"
+                                    id="prevTitle">Screen Title</div>
+                                <div style="font-size:9px;color:#888;margin-top:4px;line-height:1.4;"
+                                    id="prevDesc">Short description goes here.</div>
+                                <div style="margin-top:10px;display:flex;gap:4px;justify-content:center;">
+                                    <span style="width:6px;height:6px;border-radius:50%;background:#0d6efd;display:inline-block;"></span>
+                                    <span style="width:6px;height:6px;border-radius:50%;background:#ddd;display:inline-block;"></span>
+                                    <span style="width:6px;height:6px;border-radius:50%;background:#ddd;display:inline-block;"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="small text-muted mt-3 ps-3 mb-0">
+                            <li>Recommended image size: <strong>400 × 400 px</strong></li>
+                            <li>Keep titles under <strong>5 words</strong> for best mobile display</li>
+                            <li>Use <strong>Screen Order</strong> (1, 2, 3…) to control sequence</li>
+                            <li>Click <strong>Edit</strong> in the table to modify a screen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Onboarding Screens Table ── -->
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">All Onboarding Screens</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle" id="onboardingTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50">#</th>
+                                        <th width="100">Image</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th width="80">Order</th>
+                                        <th width="90">Status</th>
+                                        <th width="160" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="onboardingTableBody">
+                                    <tr id="loadingRow">
+                                        <td colspan="7" class="text-center py-5 text-muted">
+                                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                            Loading screens...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+$(function () {
+
+    /* ─────────────── Load Table ─────────────── */
+    loadScreens();
+
+    function loadScreens() {
+        $.get("/admin/get_onboarding", function (res) {
+            $("#loadingRow").remove();
+            if (!res.status || !res.data.length) {
+                $("#onboardingTableBody").html(
+                    '<tr><td colspan="7" class="text-center py-5 text-muted">' +
+                    '<i class="bi bi-phone" style="font-size:2rem;opacity:.3;display:block;margin-bottom:8px;"></i>' +
+                    'No onboarding screens yet. Add your first one!</td></tr>');
+                return;
+            }
+            renderRows(res.data);
+        }).fail(function () {
+            $("#onboardingTableBody").html(
+                '<tr><td colspan="7" class="text-center text-danger py-4">Failed to load data.</td></tr>');
+        });
+    }
+
+    function renderRows(screens) {
+        let html = "";
+        screens.forEach((s, i) => {
+            const badge = s.status === "active"
+                ? '<span class="badge bg-success">Active</span>'
+                : '<span class="badge bg-secondary">Inactive</span>';
+            const img = s.image_url
+                ? `<img src="${s.image_url}" alt="${s.title}"
+                        style="height:52px;width:80px;object-fit:cover;border-radius:8px;border:1px solid #eee;">`
+                : `<span class="text-muted small">No Image</span>`;
+            const desc = s.description && s.description.length > 60
+                ? s.description.substring(0, 60) + "…"
+                : (s.description || "—");
+
+            // Escape for data attributes
+            const safeTitle = (s.title || "").replace(/"/g, "&quot;");
+            const safeDesc  = (s.description || "").replace(/"/g, "&quot;");
+            const safeLink  = (s.link_url || "").replace(/"/g, "&quot;");
+            const safeImg   = (s.image_url || "").replace(/"/g, "&quot;");
+
+            html += `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${img}</td>
+                <td><strong>${s.title}</strong></td>
+                <td><small class="text-muted">${desc}</small></td>
+                <td><span class="badge bg-light text-dark border">${s.screen_order}</span></td>
+                <td>${badge}</td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-outline-primary me-1 btn-edit"
+                        data-id="${s.id}"
+                        data-title="${safeTitle}"
+                        data-description="${safeDesc}"
+                        data-order="${s.screen_order}"
+                        data-status="${s.status}"
+                        data-image="${safeImg}">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${s.id}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>`;
+        });
+        $("#onboardingTableBody").html(html);
+    }
+
+    /* ─────────────── Live Preview ─────────────── */
+    $("#screenTitle").on("input", function () {
+        const val = $(this).val().trim();
+        $("#prevTitle").text(val || "Screen Title");
+    });
+    $("#screenDescription").on("input", function () {
+        const val = $(this).val().trim();
+        $("#prevDesc").text(val ? (val.length > 80 ? val.substring(0, 80) + "…" : val) : "Short description goes here.");
+    });
+    $("#onboardingImage").on("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                $("#imgPreview").attr("src", e.target.result);
+                $("#imgPreviewWrap").removeClass("d-none");
+                $("#prevImgHolder").html(`<img src="${e.target.result}"
+                    style="height:80px;width:100%;object-fit:contain;border-radius:8px;">`);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    /* ─────────────── Save / Update ─────────────── */
+    $("#onboardingForm").on("submit", function (e) {
+        e.preventDefault();
+        const id    = $("#onboardingId").val();
+        const isEdit = id !== "";
+        const url   = isEdit ? "/admin/update_onboarding/" + id : "/admin/save_onboarding";
+
+        // Image required only on create
+        if (!isEdit && !$("#onboardingImage").val()) {
+            Swal.fire("Validation", "Please upload an image for this screen.", "warning");
+            return;
+        }
+
+        const formData = new FormData(this);
+        $("#saveBtn").prop("disabled", true)
+            .html('<span class="spinner-border spinner-border-sm me-1"></span>Processing...');
+
+        $.ajax({
+            url,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.status) {
+                    Swal.fire("Success!", res.message, "success").then(() => {
+                        resetForm();
+                        loadScreens();
+                    });
+                } else {
+                    Swal.fire("Error", res.message, "error");
+                }
+            },
+            error: function () {
+                Swal.fire("Error", "Something went wrong. Please try again.", "error");
+            },
+            complete: function () {
+                $("#saveBtn").prop("disabled", false)
+                    .html('<i class="bi bi-save me-1"></i> Save Screen');
+            }
+        });
+    });
+
+    /* ─────────────── Edit ─────────────── */
+    $(document).on("click", ".btn-edit", function () {
+        const d = $(this).data();
+        $("#onboardingId").val(d.id);
+        $("#screenTitle").val(d.title).trigger("input");
+        $("#screenDescription").val(d.description).trigger("input");
+        $("#screenOrder").val(d.order);
+        $("#screenStatus").val(d.status);
+
+        if (d.image) {
+            $("#imgPreview").attr("src", d.image);
+            $("#imgPreviewWrap").removeClass("d-none");
+            $("#prevImgHolder").html(`<img src="${d.image}"
+                style="height:80px;width:100%;object-fit:contain;border-radius:8px;">`);
+        }
+
+        $("#formTitle").html('<i class="bi bi-pencil-square text-warning"></i> Edit Onboarding Screen');
+        $("#saveBtn").html('<i class="bi bi-save me-1"></i> Update Screen');
+        $("html,body").animate({ scrollTop: 0 }, 350);
+    });
+
+    /* ─────────────── Delete ─────────────── */
+    $(document).on("click", ".btn-delete", function () {
+        const id = $(this).data("id");
+        Swal.fire({
+            title: "Delete this screen?",
+            text: "This cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "Yes, delete it!"
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/admin/delete_onboarding/" + id,
+                    type: "DELETE",
+                    success: function (res) {
+                        if (res.status) {
+                            Swal.fire("Deleted!", res.message, "success").then(() => loadScreens());
+                        } else {
+                            Swal.fire("Error", res.message, "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    /* ─────────────── Reset ─────────────── */
+    $("#resetBtn").on("click", resetForm);
+
+    function resetForm() {
+        $("#onboardingForm")[0].reset();
+        $("#onboardingId").val("");
+        $("#formTitle").html('<i class="bi bi-plus-circle text-primary"></i> Add Onboarding Screen');
+        $("#saveBtn").html('<i class="bi bi-save me-1"></i> Save Screen');
+        $("#imgPreviewWrap").addClass("d-none");
+        $("#imgPreview").attr("src", "");
+        $("#prevTitle").text("Screen Title");
+        $("#prevDesc").text("Short description goes here.");
+        $("#prevImgHolder").html('<i class="bi bi-image" style="font-size:2.5rem;color:#c9d4ff;"></i>');
+    }
+
+});
+</script>
+
+<%- include('../layout/footer') %>

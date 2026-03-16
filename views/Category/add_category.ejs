@@ -1,0 +1,84 @@
+<%- include('../layout/header') %>
+<%- include('../layout/sidebar') %>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Add Category</h1>
+    </div>
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Category Details</h5>
+
+                        <form class="row g-3" id="addCategoryForm">
+                            <!-- Field: name -->
+                            <div class="col-12">
+                                <label class="form-label">Category Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" placeholder="e.g. Electronics" required>
+                            </div>
+
+                            <!-- Field: sub_id (Hidden as 0 for main category, or add a dropdown) -->
+                            <input type="hidden" name="sub_id" value="0">
+
+                            <!-- Field: image_url -->
+                            <div class="col-12">
+                                <label class="form-label">Category Image / Icon <span class="text-danger">*</span></label>
+                                <input type="file" name="category_image" class="form-control" accept="image/*" required>
+                            </div>
+
+                            <!-- Field: status -->
+                            <div class="col-12">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary" id="saveBtn">Save Category</button>
+                                <a href="/admin/view_categories" class="btn btn-secondary">Back</a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+$("#addCategoryForm").on("submit", function(e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    
+    $("#saveBtn").prop("disabled", true).text("Processing...");
+
+    $.ajax({
+        url: "/admin/save_category",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(res) {
+            if(res.status) {
+                Swal.fire('Saved!', res.message, 'success').then(() => {
+                    window.location.href = "/admin/view_categories";
+                });
+            } else {
+                Swal.fire('Error', res.message, 'error');
+                $("#saveBtn").prop("disabled", false).text("Save Category");
+            }
+        }
+    });
+});
+</script>
+
+<%- include('../layout/footer') %>
