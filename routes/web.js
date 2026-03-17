@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
+// const multer = require('multer');
 const path = require('path');
 const BuilderController = require('../controllers/BuilderController');
 const { isAuthenticated } = require('../controllers/middleware');
@@ -8,13 +8,13 @@ const connection = require('../config/db'); // ADD THIS LINE
 const notificationController = require('../controllers/notificationController');
 const tradeController = require('../controllers/tradeController');
 
-const storage = multer.diskStorage({
-    destination: 'public/uploads/categories/',
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-const upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//     destination: 'public/uploads/categories/',
+//     filename: (req, file, cb) => {
+//         cb(null, Date.now() + '-' + file.originalname);
+//     }
+// });
+// const upload = multer({ storage: storage });
 
 // --- Routes ---
 router.get('/', BuilderController.loginpage);
@@ -26,7 +26,8 @@ router.get('/admin/dashboard', isAuthenticated, BuilderController.dashboardpage)
 // Category Management
 router.get('/admin/add_category', isAuthenticated, BuilderController.add_category_page);
 router.get('/admin/view_categories', isAuthenticated, BuilderController.view_categories);
-router.post('/admin/save_category', isAuthenticated, upload.single('category_image'), BuilderController.save_category);
+// router.post('/admin/save_category', isAuthenticated, upload.single('category_image'), BuilderController.save_category);
+router.post('/admin/save_category', isAuthenticated, BuilderController.save_category);
 
 // Edit Category Routes
 // EDIT ROUTES (Ensure these are exactly as written)
@@ -35,7 +36,9 @@ router.get('/admin/edit_category/:id', isAuthenticated, (req, res, next) => {
     next();
 }, BuilderController.edit_category_page);
 
-router.post('/admin/update_category/:id', isAuthenticated, upload.single('category_image'), BuilderController.update_category);
+// router.post('/admin/update_category/:id', isAuthenticated, upload.single('category_image'), BuilderController.update_category);
+router.post('/admin/update_category/:id', isAuthenticated,  BuilderController.update_category);
+
 
 // Delete Category
 router.delete('/admin/delete_category/:id', isAuthenticated, async (req, res) => {
@@ -49,19 +52,26 @@ router.delete('/admin/delete_category/:id', isAuthenticated, async (req, res) =>
     }
 });
 
-const onboardingStorage = multer.diskStorage({
-    destination: 'public/uploads/onboarding/',
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-const uploadOnboarding = multer({ storage: onboardingStorage });
+// const onboardingStorage = multer.diskStorage({
+//     destination: 'public/uploads/onboarding/',
+//     filename: (req, file, cb) => {
+//         cb(null, Date.now() + '-' + file.originalname);
+//     }
+// });
+// const uploadOnboarding = multer({ storage: onboardingStorage });
 
 // ── Onboarding Routes ──
 router.get('/admin/view_onboarding',  isAuthenticated, BuilderController.view_onboarding);
 router.get('/admin/get_onboarding',   isAuthenticated, BuilderController.get_onboarding);
-router.post('/admin/save_onboarding', isAuthenticated, uploadOnboarding.single('onboarding_image'), BuilderController.save_onboarding);
-router.post('/admin/update_onboarding/:id', isAuthenticated, uploadOnboarding.single('onboarding_image'), BuilderController.update_onboarding);
+
+// router.post('/admin/save_onboarding', isAuthenticated, uploadOnboarding.single('onboarding_image'), BuilderController.save_onboarding);
+
+router.post('/admin/save_onboarding', isAuthenticated, BuilderController.save_onboarding);
+
+// router.post('/admin/update_onboarding/:id', isAuthenticated, uploadOnboarding.single('onboarding_image'), BuilderController.update_onboarding);
+
+router.post('/admin/update_onboarding/:id', isAuthenticated,  BuilderController.update_onboarding);
+
 router.delete('/admin/delete_onboarding/:id', isAuthenticated, BuilderController.delete_onboarding);
 
 

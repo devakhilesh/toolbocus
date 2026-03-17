@@ -1,7 +1,7 @@
 const express        = require('express');
 const router         = express.Router();
-const multer         = require('multer');
-const upload         = multer();
+// const multer         = require('multer');
+// const upload         = multer();
  
 const AuthController     = require('../controllers/api/authController');
 const GiveawayController = require('../controllers/api/GiveawayController');
@@ -10,24 +10,24 @@ const TradeResponseController = require('../controllers/api/TradeResponseControl
 const BuilderController       = require('../controllers/BuilderController');
 const { authMiddleware } = require('../controllers/middleware');
 
-const postUpload = upload.fields([
-    { name: 'item_images',        maxCount: 10 },
-    { name: 'return_item_images', maxCount: 10 },
-]); 
+// const postUpload = upload.fields([
+//     { name: 'item_images',        maxCount: 10 },
+//     { name: 'return_item_images', maxCount: 10 },
+// ]); 
 
-// ADD THIS 👇
-const tradeUpload = upload.fields([
-    { name: 'images', maxCount: 5 },
-]); 
+// // ADD THIS 👇
+// const tradeUpload = upload.fields([
+//     { name: 'images', maxCount: 5 },
+// ]); 
  
-const profileUpload = upload.fields([{ name: 'profile_image', maxCount: 1 }]);
+// const profileUpload = upload.fields([{ name: 'profile_image', maxCount: 1 }]);
 
 // ─── AUTH ─────────────────────────────────────────────────────────
 router.post('/verify-otp',       AuthController.verifyOTP);
 router.post('/login',            AuthController.login);
 
 router.post('/complete-profile', AuthController.completeProfile);
-router.post('/update_profile', authMiddleware, profileUpload, AuthController.updateProfile);
+router.post('/update_profile', authMiddleware, AuthController.updateProfile);
 
 
  
@@ -37,11 +37,11 @@ router.get('/get_user_profile/:user_id', AuthController.getUserProfile);
 router.get('/get_categories', GiveawayController.getCategories);
 
 // ─── POSTS ────────────────────────────────────────────────────────
-router.post('/create_post',  postUpload,  GiveawayController.createPost);
+router.post('/create_post', GiveawayController.createPost);
 router.post('/get_posts',                 GiveawayController.getPosts);
 router.post('/get_my_posts',             GiveawayController.getMyPosts);
 router.get('/get_post_by_id/:id',              GiveawayController.getPostById);
-router.post('/update_post/:id', postUpload, GiveawayController.updatePost);
+router.post('/update_post/:id',  GiveawayController.updatePost);
 router.post('/delete_post/:id',          GiveawayController.deletePost);
 
 
@@ -55,7 +55,9 @@ router.get('/onboarding', BuilderController.api_onboarding);
 
 // Radha responds to Rutuja's post with her item details
 // POST /api/trade/respond/:giveaway_id
-router.post('/respond/:giveaway_id', tradeUpload, TradeResponseController.respondToPost);
+// router.post('/respond/:giveaway_id', tradeUpload, TradeResponseController.respondToPost);
+
+router.post('/respond/:giveaway_id',  TradeResponseController.respondToPost);
 
 // Rutuja sees all offers/responses on her post
 // GET /api/trade/responses/:giveaway_id
